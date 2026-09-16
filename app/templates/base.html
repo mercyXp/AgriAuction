@@ -54,6 +54,7 @@
                     </li>
                     <li class="nav-item ms-lg-3">
                         <form method="post" action="{{ url_for('main.logout') }}" class="d-inline">
+                            {% include "_csrf.html" %}
                             <button class="btn btn-agri-gold rounded-pill px-4" type="submit">Sign out</button>
                         </form>
                     </li>

@@ -1,0 +1,98 @@
+{% extends "app/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+{% block page_heading %}Dashboard{% endblock %}
+
+{% block content %}
+<p class="text-muted mb-4">
+    Welcome, <strong>{{ current_user.username }}</strong>.
+    Your role is <span class="badge badge-active">{{ role_label }}</span>.
+</p>
+
+{% if not db_ok %}
+<div class="alert alert-warning">
+    Live counts could not be loaded. Check that MySQL is running and
+    <code>agriauction_app</code> is set in <code>.env</code>.
+</div>
+{% endif %}
+
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="app-stat"><div class="label">Active farmers</div>
+            <div class="value">{{ stats.farmers if stats.farmers is not none else "—" }}</div></div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="app-stat"><div class="label">Active buyers</div>
+            <div class="value">{{ stats.buyers if stats.buyers is not none else "—" }}</div></div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="app-stat"><div class="label">Open auctions</div>
+            <div class="value">{{ stats.open_lots if stats.open_lots is not none else "—" }}</div></div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="app-stat"><div class="label">Lots sold</div>
+            <div class="value">{{ stats.lots_sold if stats.lots_sold is not none else "—" }}</div></div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="app-stat"><div class="label">Total sales</div>
+            <div class="value">{{ stats.total_sales|zmw if stats.total_sales is not none else "—" }}</div></div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="app-stat"><div class="label">Verified payments</div>
+            <div class="value">{{ stats.verified_payments|zmw if stats.verified_payments is not none else "—" }}</div></div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="app-stat"><div class="label">Outstanding</div>
+            <div class="value">{{ stats.outstanding|zmw if stats.outstanding is not none else "—" }}</div></div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="app-stat"><div class="label">Pending collections</div>
+            <div class="value">{{ stats.pending_collections if stats.pending_collections is not none else "—" }}</div></div>
+    </div>
+</div>
+
+{% if db_ok %}
+<div class="row g-3">
+    <div class="col-lg-6">
+        <div class="card agri-card app-chart-card">
+            <div class="card-body">
+                <h2 class="h6 fw-bold">Sales by produce type</h2>
+                <canvas id="chartSalesByType" aria-label="Sales by produce type"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card agri-card app-chart-card">
+            <div class="card-body">
+                <h2 class="h6 fw-bold">Monthly sales</h2>
+                <canvas id="chartMonthly" aria-label="Monthly sales"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card agri-card app-chart-card">
+            <div class="card-body">
+                <h2 class="h6 fw-bold">Lot status</h2>
+                <canvas id="chartLotStatus" aria-label="Lot status distribution"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card agri-card app-chart-card">
+            <div class="card-body">
+                <h2 class="h6 fw-bold">Payment status</h2>
+                <canvas id="chartPaymentStatus" aria-label="Payment status"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="dashboard-charts" type="application/json">{{ chart_json|safe }}</script>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{% if db_ok %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+{% endif %}
+{% endblock %}

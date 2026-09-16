@@ -1,0 +1,36 @@
+{% extends "app/base.html" %}
+
+{% block title %}{% if mode == 'create' %}Add grade{% else %}Edit grade{% endif %}{% endblock %}
+{% block page_heading %}{% if mode == 'create' %}Add grade{% else %}Edit grade{% endif %}{% endblock %}
+
+{% block content %}
+<div class="card agri-card">
+    <div class="card-body p-4">
+        <form method="post" novalidate>
+            {% include "_csrf.html" %}
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label" for="grade_code">Grade code</label>
+                    <input class="form-control {% if errors.get('grade_code') %}is-invalid{% endif %}"
+                           id="grade_code" name="grade_code" required value="{{ form.grade_code }}">
+                    {% if errors.get('grade_code') %}<div class="invalid-feedback">{{ errors.grade_code }}</div>{% endif %}
+                </div>
+                <div class="col-md-8">
+                    <label class="form-label" for="grade_name">Grade name</label>
+                    <input class="form-control {% if errors.get('grade_name') %}is-invalid{% endif %}"
+                           id="grade_name" name="grade_name" required value="{{ form.grade_name }}">
+                    {% if errors.get('grade_name') %}<div class="invalid-feedback">{{ errors.grade_name }}</div>{% endif %}
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="description">Description (optional)</label>
+                    <input class="form-control" id="description" name="description" value="{{ form.description or '' }}">
+                </div>
+            </div>
+            <div class="mt-4 d-flex gap-2">
+                <button class="btn btn-agri" type="submit">Save</button>
+                <a class="btn btn-outline-secondary" href="{{ url_for('grades.index') }}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

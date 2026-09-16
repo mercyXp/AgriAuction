@@ -62,11 +62,14 @@ def find_staff_by_username(username):
 
 def login_user(staff, remember=False):
     """Store the signed-in staff member in the Flask session."""
+    from app.csrf import csrf_token
+
     session.clear()
     session["user_id"] = staff["staff_id"]
     session["username"] = staff["username"]
     session["role"] = staff["role"]
     session.permanent = bool(remember)
+    csrf_token()
 
 
 def logout_user():

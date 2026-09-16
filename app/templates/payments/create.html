@@ -1,0 +1,61 @@
+{% extends "app/base.html" %}
+
+{% block title %}Record payment{% endblock %}
+{% block page_heading %}Record payment{% endblock %}
+
+{% block content %}
+<div class="card agri-card">
+    <div class="card-body p-4">
+        <p class="text-muted">Payments are recorded with <code>sp_record_payment</code>. A verified amount cannot exceed the outstanding balance.</p>
+        <form method="post" novalidate>
+            {% include "_csrf.html" %}
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="sale_id">Sale</label>
+                    <select class="form-select {% if errors.get('sale_id') %}is-invalid{% endif %}" id="sale_id" name="sale_id" required>
+                        <option value="">Choose a sale with a balance</option>
+                        {% for sale in sales %}
+                        <option value="{{ sale.sale_id }}" {% if form.sale_id|string == sale.sale_id|string %}selected{% endif %}>
+                            {{ sale.sale_reference }} — {{ sale.business_name }} — outstanding {{ sale.outstanding_balance|zmw }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    {% if errors.get('sale_id') %}<div class="invalid-feedback">{{ errors.sale_id }}</div>{% endif %}
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" for="amount">Amount (ZMW)</label>
+                    <input class="form-control {% if errors.get('amount') %}is-invalid{% endif %}"
+                           id="amount" name="amount" type="number" step="0.01" min="0.01" required value="{{ form.amount }}">
+                    {% if errors.get('amount') %}<div class="invalid-feedback">{{ errors.amount }}</div>{% endif %}
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" for="payment_method">Method</label>
+                    <select class="form-select" id="payment_method" name="payment_method">
+                        {% for method in methods %}
+                        <option value="{{ method }}" {% if form.payment_method == method %}selected{% endif %}>{{ method }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="payment_date">Payment date</label>
+                    <input class="form-control {% if errors.get('payment_date') %}is-invalid{% endif %}"
+                           id="payment_date" name="payment_date" type="datetime-local" required value="{{ form.payment_date }}">
+                    {% if errors.get('payment_date') %}<div class="invalid-feedback">{{ errors.payment_date }}</div>{% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="status">Status</label>
+                    <select class="form-select" id="status" name="status">
+                        {% for item in statuses %}
+                        <option value="{{ item }}" {% if form.status == item %}selected{% endif %}>{{ item }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="mt-4 d-flex gap-2">
+                <button class="btn btn-agri" type="submit">Save payment</button>
+                <a class="btn btn-outline-secondary" href="{{ url_for('payments.index') }}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

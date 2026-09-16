@@ -19,13 +19,17 @@ from mysql.connector import Error as MySQLError
 
 
 def load_db_config():
-    """Read MySQL settings from the environment."""
+    """Read MySQL settings from the environment.
+
+    Local .env uses DB_*. Railway MySQL plugin injects MYSQLHOST etc.
+    Either set of names works; DB_* wins when both are present.
+    """
     return {
-        "DB_HOST": os.getenv("DB_HOST", "localhost"),
-        "DB_PORT": int(os.getenv("DB_PORT", "3306")),
-        "DB_NAME": os.getenv("DB_NAME", "agriauction"),
-        "DB_USER": os.getenv("DB_USER", "agriauction_app"),
-        "DB_PASSWORD": os.getenv("DB_PASSWORD", ""),
+        "DB_HOST": os.getenv("DB_HOST") or os.getenv("MYSQLHOST", "localhost"),
+        "DB_PORT": int(os.getenv("DB_PORT") or os.getenv("MYSQLPORT", "3306")),
+        "DB_NAME": os.getenv("DB_NAME") or os.getenv("MYSQLDATABASE", "agriauction"),
+        "DB_USER": os.getenv("DB_USER") or os.getenv("MYSQLUSER", "agriauction_app"),
+        "DB_PASSWORD": os.getenv("DB_PASSWORD") or os.getenv("MYSQLPASSWORD", ""),
     }
 
 
@@ -144,3 +148,26 @@ def ping_db():
     """Return True if SELECT 1 succeeds on the current connection."""
     row = query_one("SELECT 1 AS ok", ())
     return row is not None and row["ok"] == 1
+
+
+def callproc(name, args=()):
+    """Call a stored procedure and return rows from its result set(s).
+
+    Procedures that COMMIT internally are still followed by a connection-level
+    commit so Flask's request connection stays consistent. SIGNAL errors
+    rollback and are re-raised as MySQLError.
+    """
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    try:
+        cursor.callproc(name, list(args))
+        rows = []
+        for result in cursor.stored_results():
+            rows.extend(result.fetchall())
+        db.commit()
+        return rows
+    except MySQLError:
+        db.rollback()
+        raise
+    finally:
+        cursor.close()

@@ -1,0 +1,31 @@
+{% macro lot_badge(status) -%}
+{%- if status == 'OPEN' -%}
+<span class="badge badge-open">OPEN</span>
+{%- elif status == 'REGISTERED' -%}
+<span class="badge badge-registered">REGISTERED</span>
+{%- elif status == 'SOLD' -%}
+<span class="badge badge-sold">SOLD</span>
+{%- elif status == 'UNSOLD' -%}
+<span class="badge badge-unsold">UNSOLD</span>
+{%- elif status == 'COLLECTED' -%}
+<span class="badge badge-collected">COLLECTED</span>
+{%- else -%}
+<span class="badge badge-closed">{{ status }}</span>
+{%- endif -%}
+{%- endmacro %}
+
+{% macro sale_badge(status) -%}
+{%- if status == 'PAID' or status == 'COLLECTED' -%}
+<span class="badge badge-paid">{{ status }}</span>
+{%- else -%}
+<span class="badge badge-pending">{{ status }}</span>
+{%- endif -%}
+{%- endmacro %}
+
+{% macro active_badge(flag) -%}
+{%- if flag -%}
+<span class="badge badge-active">Active</span>
+{%- else -%}
+<span class="badge badge-inactive">Inactive</span>
+{%- endif -%}
+{%- endmacro %}

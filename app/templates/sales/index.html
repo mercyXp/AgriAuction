@@ -1,0 +1,59 @@
+{% extends "app/base.html" %}
+{% from "_badges.html" import sale_badge %}
+
+{% block title %}Sales{% endblock %}
+{% block page_heading %}Successful sales{% endblock %}
+
+{% block content %}
+<p class="text-muted">Sales are created only when an auction is closed. There is no form to type a sale by hand.</p>
+<form class="app-toolbar" method="get">
+    <input class="form-control app-search" type="search" name="q" value="{{ q }}"
+           placeholder="Search reference, lot or buyer" aria-label="Search sales">
+    <select class="form-select" name="status" style="max-width: 14rem;">
+        {% for value, label in [
+            ('all', 'All statuses'),
+            ('PAYMENT_PENDING', 'PAYMENT_PENDING'),
+            ('PARTIALLY_PAID', 'PARTIALLY_PAID'),
+            ('PAID', 'PAID'),
+            ('COLLECTED', 'COLLECTED')
+        ] %}
+        <option value="{{ value }}" {% if status == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <button class="btn btn-agri" type="submit">Search</button>
+</form>
+<div class="app-table-wrap table-responsive">
+    <table class="table app-table mb-0">
+        <thead>
+            <tr>
+                <th>Reference</th>
+                <th>Lot</th>
+                <th>Buyer</th>
+                <th>Amount</th>
+                <th>Paid</th>
+                <th>Outstanding</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in sales %}
+            <tr>
+                <td><code>{{ sale.sale_reference }}</code></td>
+                <td>{{ sale.lot_number }} · {{ sale.produce_name }}</td>
+                <td>{{ sale.business_name }}</td>
+                <td>{{ sale.sale_amount|zmw }}</td>
+                <td>{{ sale.total_verified_payments|zmw }}</td>
+                <td>{{ sale.outstanding_balance|zmw }}</td>
+                <td>{{ sale_badge(sale.status) }}</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-success" href="{{ url_for('sales.view', sale_id=sale.sale_id) }}">View</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="8" class="text-muted text-center py-4">No sales match this search.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

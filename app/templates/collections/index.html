@@ -1,0 +1,38 @@
+{% extends "app/base.html" %}
+
+{% block title %}Collections{% endblock %}
+{% block page_heading %}Collections{% endblock %}
+
+{% block content %}
+{% if pending %}
+<div class="alert alert-warning">
+    {{ pending|length }} paid sale(s) are waiting for collection.
+    <a href="{{ url_for('collections.create') }}">Record one</a>.
+</div>
+{% endif %}
+<div class="app-toolbar">
+    <a class="btn btn-agri-gold ms-lg-auto" href="{{ url_for('collections.create') }}">Record collection</a>
+</div>
+<div class="app-table-wrap table-responsive">
+    <table class="table app-table mb-0">
+        <thead>
+            <tr><th>Reference</th><th>Sale</th><th>Lot</th><th>Buyer</th><th>Qty</th><th>Date</th><th>Collected by</th></tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td><code>{{ row.collection_reference }}</code></td>
+                <td>{{ row.sale_reference }}</td>
+                <td>{{ row.lot_number }}</td>
+                <td>{{ row.business_name }}</td>
+                <td>{{ row.collected_quantity }}</td>
+                <td>{{ row.collection_date }}</td>
+                <td>{{ row.collected_by }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7" class="text-muted text-center py-4">No collections recorded yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

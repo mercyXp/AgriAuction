@@ -1,0 +1,36 @@
+{% extends "app/base.html" %}
+
+{% block title %}{% if mode == 'create' %}Add produce type{% else %}Edit produce type{% endif %}{% endblock %}
+{% block page_heading %}{% if mode == 'create' %}Add produce type{% else %}Edit produce type{% endif %}{% endblock %}
+
+{% block content %}
+<div class="card agri-card">
+    <div class="card-body p-4">
+        <form method="post" novalidate>
+            {% include "_csrf.html" %}
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="name">Name</label>
+                    <input class="form-control {% if errors.get('name') %}is-invalid{% endif %}"
+                           id="name" name="name" required value="{{ form.name }}">
+                    {% if errors.get('name') %}<div class="invalid-feedback">{{ errors.name }}</div>{% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="unit_of_measure">Unit of measure</label>
+                    <input class="form-control {% if errors.get('unit_of_measure') %}is-invalid{% endif %}"
+                           id="unit_of_measure" name="unit_of_measure" required value="{{ form.unit_of_measure }}">
+                    {% if errors.get('unit_of_measure') %}<div class="invalid-feedback">{{ errors.unit_of_measure }}</div>{% endif %}
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="description">Description (optional)</label>
+                    <input class="form-control" id="description" name="description" value="{{ form.description or '' }}">
+                </div>
+            </div>
+            <div class="mt-4 d-flex gap-2">
+                <button class="btn btn-agri" type="submit">Save</button>
+                <a class="btn btn-outline-secondary" href="{{ url_for('produce.index') }}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

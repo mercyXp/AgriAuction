@@ -1,0 +1,97 @@
+{% extends "app/base.html" %}
+
+{% block title %}Reports{% endblock %}
+{% block page_heading %}Reports{% endblock %}
+
+{% block content %}
+<p class="text-muted">Every figure on this page is produced by SQL (<code>COUNT</code>, <code>SUM</code>, <code>AVG</code>, <code>GROUP BY</code>). Nothing is typed in by hand.</p>
+
+<h2 class="h5 mt-4">1. Farmer supply</h2>
+<div class="app-table-wrap table-responsive mb-4">
+    <table class="table app-table mb-0">
+        <thead>
+            <tr><th>Farmer</th><th>Farm</th><th>Produce</th><th>Lots</th><th>Total qty</th><th>Average</th></tr>
+        </thead>
+        <tbody>
+            {% for row in farmer_supply %}
+            <tr>
+                <td>{{ row.farmer }}</td>
+                <td>{{ row.farm_name }}</td>
+                <td>{{ row.produce_type }}</td>
+                <td>{{ row.number_of_lots }}</td>
+                <td>{{ row.total_quantity }} {{ row.unit_of_measure }}</td>
+                <td>{{ "%.3f"|format(row.average_lot_quantity) }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6" class="text-muted text-center py-4">No supply data.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h2 class="h5">2. Buyer purchasing</h2>
+<div class="app-table-wrap table-responsive mb-4">
+    <table class="table app-table mb-0">
+        <thead>
+            <tr><th>Buyer</th><th>Purchases</th><th>Total value</th><th>Average</th></tr>
+        </thead>
+        <tbody>
+            {% for row in buyer_purchasing %}
+            <tr>
+                <td>{{ row.business_name }} <code>{{ row.buyer_code }}</code></td>
+                <td>{{ row.number_of_purchases }}</td>
+                <td>{{ row.total_purchase_value|zmw }}</td>
+                <td>{{ row.average_purchase_value|zmw }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4" class="text-muted text-center py-4">No purchase data.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h2 class="h5">3. Sales summary</h2>
+<div class="app-table-wrap table-responsive mb-4">
+    <table class="table app-table mb-0">
+        <thead>
+            <tr><th>Sale</th><th>Buyer</th><th>Produce</th><th>Qty</th><th>Amount</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+            {% for row in sales_summary %}
+            <tr>
+                <td><code>{{ row.sale_reference }}</code></td>
+                <td>{{ row.buyer }}</td>
+                <td>{{ row.produce }}</td>
+                <td>{{ row.quantity }} {{ row.unit_of_measure }}</td>
+                <td>{{ row.sale_amount|zmw }}</td>
+                <td>{{ row.payment_status }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6" class="text-muted text-center py-4">No sales.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h2 class="h5">4. Outstanding payments</h2>
+<div class="app-table-wrap table-responsive">
+    <table class="table app-table mb-0">
+        <thead>
+            <tr><th>Sale</th><th>Buyer</th><th>Sale amount</th><th>Paid</th><th>Outstanding</th></tr>
+        </thead>
+        <tbody>
+            {% for row in outstanding %}
+            <tr>
+                <td><code>{{ row.sale_reference }}</code></td>
+                <td>{{ row.buyer }}</td>
+                <td>{{ row.sale_amount|zmw }}</td>
+                <td>{{ row.amount_paid|zmw }}</td>
+                <td>{{ row.outstanding_balance|zmw }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5" class="text-muted text-center py-4">No outstanding balances.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

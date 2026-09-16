@@ -1,0 +1,71 @@
+{% extends "app/base.html" %}
+
+{% block title %}{{ farmer.farmer_code }}{% endblock %}
+{% block page_heading %}{{ farmer.first_name }} {{ farmer.last_name }}{% endblock %}
+
+{% block content %}
+<div class="card agri-card mb-3">
+    <div class="card-body p-4">
+        <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+            <code class="fs-6">{{ farmer.farmer_code }}</code>
+            {% if farmer.is_active %}
+            <span class="badge badge-active">Active</span>
+            {% else %}
+            <span class="badge badge-inactive">Inactive</span>
+            {% endif %}
+        </div>
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Farm</dt>
+            <dd class="col-sm-9">{{ farmer.farm_name }}</dd>
+            <dt class="col-sm-3">Phone</dt>
+            <dd class="col-sm-9">{{ farmer.phone }}</dd>
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">{{ farmer.email or "—" }}</dd>
+            <dt class="col-sm-3">Address</dt>
+            <dd class="col-sm-9">{{ farmer.address }}</dd>
+            <dt class="col-sm-3">Registered</dt>
+            <dd class="col-sm-9">{{ farmer.registration_date }}</dd>
+            <dt class="col-sm-3">Produce lots</dt>
+            <dd class="col-sm-9">{{ lot_count }} historical lot(s) — lots are never deleted with the farmer.</dd>
+        </dl>
+        <div class="mt-4 d-flex flex-wrap gap-2">
+            <a class="btn btn-agri" href="{{ url_for('farmers.edit', farmer_id=farmer.farmer_id) }}">Edit</a>
+            <a class="btn btn-outline-secondary" href="{{ url_for('farmers.index') }}">Back to list</a>
+            {% if farmer.is_active %}
+            <button class="btn btn-outline-danger" type="button" data-bs-toggle="modal" data-bs-target="#deactivateModal">
+                Deactivate
+            </button>
+            {% else %}
+            <form method="post" action="{{ url_for('farmers.reactivate', farmer_id=farmer.farmer_id) }}">
+                {% include "_csrf.html" %}
+                <button class="btn btn-outline-success" type="submit">Reactivate</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% if farmer.is_active %}
+<div class="modal fade" id="deactivateModal" tabindex="-1" aria-labelledby="deactivateTitle" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title h5" id="deactivateTitle">Deactivate this farmer?</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                The farmer will not be deleted. Historical lots stay in the database.
+                Inactive farmers cannot register new lots.
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
+                <form method="post" action="{{ url_for('farmers.deactivate', farmer_id=farmer.farmer_id) }}">
+                    {% include "_csrf.html" %}
+                    <button class="btn btn-danger" type="submit">Deactivate</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

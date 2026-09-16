@@ -1,0 +1,19 @@
+{% extends "app/base.html" %}
+
+{% block title %}Edit {{ buyer.buyer_code }}{% endblock %}
+{% block page_heading %}Edit {{ buyer.buyer_code }}{% endblock %}
+
+{% block content %}
+<div class="card agri-card">
+    <div class="card-body p-4">
+        <p class="text-muted">Buyer code cannot be changed.</p>
+        <form method="post" novalidate>
+            {% include "buyers/_form.html" %}
+            <div class="mt-4 d-flex gap-2">
+                <button class="btn btn-agri" type="submit">Save changes</button>
+                <a class="btn btn-outline-secondary" href="{{ url_for('buyers.view', buyer_id=buyer.buyer_id) }}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

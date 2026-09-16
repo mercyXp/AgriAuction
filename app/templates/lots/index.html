@@ -1,0 +1,64 @@
+{% extends "app/base.html" %}
+{% from "_badges.html" import lot_badge %}
+
+{% block title %}Lots{% endblock %}
+{% block page_heading %}Produce lots{% endblock %}
+
+{% block content %}
+<form class="app-toolbar" method="get" action="{{ url_for('lots.index') }}">
+    <input class="form-control app-search" type="search" name="q" value="{{ q }}"
+           placeholder="Search lot, farmer, farm or produce" aria-label="Search lots">
+    <select class="form-select" name="status" style="max-width: 13rem;" aria-label="Filter by status">
+        {% for value, label in [
+            ('all', 'All statuses'),
+            ('REGISTERED', 'REGISTERED'),
+            ('OPEN', 'OPEN'),
+            ('SOLD', 'SOLD'),
+            ('UNSOLD', 'UNSOLD'),
+            ('COLLECTED', 'COLLECTED')
+        ] %}
+        <option value="{{ value }}" {% if status == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <button class="btn btn-agri" type="submit">Search</button>
+    <a class="btn btn-outline-success" href="{{ url_for('lots.index') }}">Clear</a>
+    {% if current_user.role in ['ADMIN', 'OPERATOR'] %}
+    <a class="btn btn-agri-gold ms-lg-auto" href="{{ url_for('lots.create') }}">Register lot</a>
+    {% endif %}
+</form>
+
+<div class="app-table-wrap table-responsive">
+    <table class="table app-table mb-0">
+        <thead>
+            <tr>
+                <th>Lot</th>
+                <th>Farmer</th>
+                <th>Produce</th>
+                <th>Qty</th>
+                <th>Min bid</th>
+                <th>Window</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lot in lots %}
+            <tr>
+                <td><code>{{ lot.lot_number }}</code></td>
+                <td>{{ lot.farmer_name }}</td>
+                <td>{{ lot.produce_name }}</td>
+                <td>{{ lot.quantity }} {{ lot.unit_of_measure }}</td>
+                <td>{{ lot.minimum_bid_price|zmw }}</td>
+                <td class="small">{{ lot.auction_start }} → {{ lot.auction_end }}</td>
+                <td>{{ lot_badge(lot.status) }}</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-success" href="{{ url_for('lots.view', lot_id=lot.lot_id) }}">View</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="8" class="text-muted text-center py-4">No lots match this search.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

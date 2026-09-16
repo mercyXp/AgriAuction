@@ -1,0 +1,20 @@
+{% extends "app/base.html" %}
+
+{% block title %}Administration{% endblock %}
+{% block page_heading %}Administration{% endblock %}
+
+{% block content %}
+<div class="card agri-card">
+    <div class="card-body p-4">
+        <p>
+            This page is limited to the <strong>ADMIN</strong> role
+            (<code>@role_required("ADMIN")</code>).
+        </p>
+        <p class="mb-0">
+            Staff accounts are listed on <a href="{{ url_for('staff.index') }}">Staff</a>.
+            Database users, privileges and backup notes live in
+            <code>docs/security.md</code> and <code>database/security.sql</code>.
+        </p>
+    </div>
+</div>
+{% endblock %}

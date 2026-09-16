@@ -92,7 +92,9 @@ class AuthTests(unittest.TestCase):
             "/login",
             data={"username": "chanda.admin", "password": self.password},
         )
-        response = self.client.post("/logout", follow_redirects=False)
+        with self.client.session_transaction() as sess:
+            token = sess["_csrf"]
+        response = self.client.post("/logout", data={"_csrf": token}, follow_redirects=False)
         self.assertEqual(response.status_code, 302)
         with self.client.session_transaction() as sess:
             self.assertNotIn("user_id", sess)
@@ -114,6 +116,7 @@ class AuthTests(unittest.TestCase):
         response = self.client.get("/administration")
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"Administration", response.data)
+        self.assertIn(b"app-sidebar", response.data)
 
     @patch("app.routes.main.find_staff_by_username")
     def test_open_redirect_is_rejected(self, mock_find):

@@ -1,0 +1,17 @@
+{% extends "app/base.html" %}
+
+{% block title %}{{ module_title }}{% endblock %}
+{% block page_heading %}{{ module_title }}{% endblock %}
+
+{% block content %}
+<div class="card agri-card">
+    <div class="card-body p-4">
+        <p class="mb-2">{{ summary }}</p>
+        <p class="text-muted mb-0">
+            This module is in the navigation so each role can see the intended layout.
+            Data-entry screens are added as each area is implemented. Farmers are available now.
+        </p>
+        <a class="btn btn-agri mt-3" href="{{ url_for('dashboard.index') }}">Back to dashboard</a>
+    </div>
+</div>
+{% endblock %}

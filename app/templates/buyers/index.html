@@ -1,0 +1,59 @@
+{% extends "app/base.html" %}
+{% from "_badges.html" import active_badge %}
+
+{% block title %}Buyers{% endblock %}
+{% block page_heading %}Buyers{% endblock %}
+
+{% block content %}
+<form class="app-toolbar" method="get" action="{{ url_for('buyers.index') }}">
+    <input class="form-control app-search" type="search" name="q" value="{{ q }}"
+           placeholder="Search code, business, contact or phone" aria-label="Search buyers">
+    <select class="form-select" name="status" style="max-width: 11rem;" aria-label="Filter by status">
+        <option value="all" {% if status == 'all' %}selected{% endif %}>All statuses</option>
+        <option value="active" {% if status == 'active' %}selected{% endif %}>Active</option>
+        <option value="inactive" {% if status == 'inactive' %}selected{% endif %}>Inactive</option>
+    </select>
+    <button class="btn btn-agri" type="submit">Search</button>
+    <a class="btn btn-outline-success" href="{{ url_for('buyers.index') }}">Clear</a>
+    <a class="btn btn-agri-gold ms-lg-auto" href="{{ url_for('buyers.create') }}">
+        <i class="bi bi-plus-lg"></i> Register buyer
+    </a>
+</form>
+
+<div class="app-table-wrap table-responsive">
+    <table class="table app-table mb-0">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Business</th>
+                <th>Contact</th>
+                <th>Phone</th>
+                <th>Registered</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if buyers %}
+                {% for buyer in buyers %}
+                <tr>
+                    <td><code>{{ buyer.buyer_code }}</code></td>
+                    <td>{{ buyer.business_name }}</td>
+                    <td>{{ buyer.contact_person }}</td>
+                    <td>{{ buyer.phone }}</td>
+                    <td>{{ buyer.registration_date }}</td>
+                    <td>{{ active_badge(buyer.is_active) }}</td>
+                    <td class="text-end">
+                        <a class="btn btn-sm btn-outline-success" href="{{ url_for('buyers.view', buyer_id=buyer.buyer_id) }}">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="7" class="text-muted text-center py-4">No buyers match this search.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

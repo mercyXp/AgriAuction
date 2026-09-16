@@ -1,0 +1,35 @@
+{% extends "app/base.html" %}
+{% from "_badges.html" import lot_badge, sale_badge %}
+
+{% block title %}Auction result{% endblock %}
+{% block page_heading %}Auction result — {{ lot.lot_number }}{% endblock %}
+
+{% block content %}
+<div class="card agri-card">
+    <div class="card-body p-4">
+        <p>{{ lot_badge(lot.status) }} {{ lot.produce_name }} from {{ lot.farmer_name }}</p>
+        {% if lot.status == 'UNSOLD' %}
+        <div class="alert alert-warning">Auction closed — no winner</div>
+        {% elif sale %}
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Winning buyer</dt>
+            <dd class="col-sm-9">{{ sale.business_name }} <code>{{ sale.buyer_code }}</code></dd>
+            <dt class="col-sm-3">Winning bid</dt>
+            <dd class="col-sm-9">{{ sale.bid_amount|zmw }} at {{ sale.bid_time }}</dd>
+            <dt class="col-sm-3">Sale reference</dt>
+            <dd class="col-sm-9"><code>{{ sale.sale_reference }}</code></dd>
+            <dt class="col-sm-3">Sale amount</dt>
+            <dd class="col-sm-9">{{ sale.sale_amount|zmw }}</dd>
+            <dt class="col-sm-3">Sale status</dt>
+            <dd class="col-sm-9">{{ sale_badge(sale.status) }}</dd>
+        </dl>
+        {% endif %}
+        <div class="mt-4 d-flex gap-2">
+            {% if sale %}
+            <a class="btn btn-agri" href="{{ url_for('sales.view', sale_id=sale.sale_id) }}">Open sale</a>
+            {% endif %}
+            <a class="btn btn-outline-secondary" href="{{ url_for('auctions.index') }}">Back to auctions</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

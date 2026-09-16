@@ -1,0 +1,48 @@
+{% extends "app/base.html" %}
+{% from "_badges.html" import active_badge %}
+
+{% block title %}Quality grades{% endblock %}
+{% block page_heading %}Quality grades{% endblock %}
+
+{% block content %}
+<form class="app-toolbar" method="get">
+    <input class="form-control app-search" type="search" name="q" value="{{ q }}"
+           placeholder="Search grades" aria-label="Search grades">
+    <button class="btn btn-agri" type="submit">Search</button>
+    <a class="btn btn-agri-gold ms-lg-auto" href="{{ url_for('grades.create') }}">Add grade</a>
+</form>
+<div class="app-table-wrap table-responsive">
+    <table class="table app-table mb-0">
+        <thead>
+            <tr><th>Code</th><th>Name</th><th>Description</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td><code>{{ row.grade_code }}</code></td>
+                <td>{{ row.grade_name }}</td>
+                <td>{{ row.description or "—" }}</td>
+                <td>{{ active_badge(row.is_active) }}</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-success" href="{{ url_for('grades.edit', grade_id=row.grade_id) }}">Edit</a>
+                    {% if row.is_active %}
+                    <form class="d-inline" method="post" action="{{ url_for('grades.deactivate', grade_id=row.grade_id) }}"
+                          onsubmit="return confirm('Deactivate this grade? Existing lots are kept.');">
+                        {% include "_csrf.html" %}
+                        <button class="btn btn-sm btn-outline-danger" type="submit">Deactivate</button>
+                    </form>
+                    {% else %}
+                    <form class="d-inline" method="post" action="{{ url_for('grades.reactivate', grade_id=row.grade_id) }}">
+                        {% include "_csrf.html" %}
+                        <button class="btn btn-sm btn-outline-success" type="submit">Reactivate</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5" class="text-muted text-center py-4">No grades found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

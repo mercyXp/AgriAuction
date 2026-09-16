@@ -1,0 +1,32 @@
+{% extends "app/base.html" %}
+{% from "_badges.html" import active_badge %}
+
+{% block title %}Staff{% endblock %}
+{% block page_heading %}Staff accounts{% endblock %}
+
+{% block content %}
+<p class="text-muted">
+    These are <strong>application users</strong> in the <code>staff</code> table.
+    They are not MySQL accounts. Flask still connects as <code>agriauction_app</code>.
+</p>
+<div class="app-table-wrap table-responsive">
+    <table class="table app-table mb-0">
+        <thead>
+            <tr><th>Username</th><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+            {% for person in people %}
+            <tr>
+                <td><code>{{ person.username }}</code></td>
+                <td>{{ person.first_name }} {{ person.last_name }}</td>
+                <td>{{ person.email }}</td>
+                <td>{{ labels.get(person.role, person.role) }}</td>
+                <td>{{ active_badge(person.is_active) }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5" class="text-muted text-center py-4">No staff rows loaded.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

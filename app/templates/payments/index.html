@@ -1,0 +1,35 @@
+{% extends "app/base.html" %}
+
+{% block title %}Payments{% endblock %}
+{% block page_heading %}Payments{% endblock %}
+
+{% block content %}
+<form class="app-toolbar" method="get">
+    <input class="form-control app-search" type="search" name="q" value="{{ q }}"
+           placeholder="Search payment, sale or buyer" aria-label="Search payments">
+    <button class="btn btn-agri" type="submit">Search</button>
+    <a class="btn btn-agri-gold ms-lg-auto" href="{{ url_for('payments.create') }}">Record payment</a>
+</form>
+<div class="app-table-wrap table-responsive">
+    <table class="table app-table mb-0">
+        <thead>
+            <tr><th>Reference</th><th>Sale</th><th>Buyer</th><th>Amount</th><th>Method</th><th>Date</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+            {% for payment in payments %}
+            <tr>
+                <td><code>{{ payment.payment_reference }}</code></td>
+                <td>{{ payment.sale_reference }}</td>
+                <td>{{ payment.business_name }}</td>
+                <td>{{ payment.amount|zmw }}</td>
+                <td>{{ payment.payment_method }}</td>
+                <td>{{ payment.payment_date }}</td>
+                <td>{{ payment.status }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7" class="text-muted text-center py-4">No payments match this search.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -87,3 +87,139 @@ WHERE sale_id = 8
 --     4,
 --     'VERIFIED'
 -- );
+
+-- =============================================================================
+-- Phase 21 — labelled SQL demonstrations (business-purpose queries)
+-- =============================================================================
+
+-- -----------------------------------------------------------------------------
+-- DDL examples (already applied by schema.sql / indexes.sql)
+-- -----------------------------------------------------------------------------
+-- CREATE TABLE: see database/schema.sql (staff, farmers, produce_lots, ...)
+-- CREATE INDEX: see database/indexes.sql
+-- ALTER TABLE example (do not run against the live project unless needed):
+-- ALTER TABLE buyers ADD COLUMN notes VARCHAR(255) NULL;
+-- Revert would be: ALTER TABLE buyers DROP COLUMN notes;
+
+-- -----------------------------------------------------------------------------
+-- DML
+-- -----------------------------------------------------------------------------
+
+-- INSERT: a new pending payment is normally done by CALL sp_record_payment.
+-- Direct INSERT is shown here only as DML syntax:
+-- INSERT INTO quality_grades (grade_code, grade_name, description, is_active)
+-- VALUES ('DEMO', 'Demonstration grade', 'Viva-only example', 0);
+
+-- UPDATE: deactivate rather than delete a farmer who still has lots
+-- UPDATE farmers
+-- SET is_active = 0
+-- WHERE farmer_code = 'FRM-0012'
+--   AND is_active = 1;
+
+-- DELETE: only safe for rows with no history. The application deactivates instead.
+-- DELETE FROM produce_types WHERE name = 'Does-Not-Exist';
+
+-- -----------------------------------------------------------------------------
+-- SELECT — filtering, sorting, LIKE, BETWEEN, IN, IS NULL
+-- -----------------------------------------------------------------------------
+
+SELECT farmer_code, first_name, last_name, farm_name
+FROM farmers
+WHERE is_active = 1
+ORDER BY last_name, first_name;
+
+SELECT lot_number, status, minimum_bid_price
+FROM produce_lots
+WHERE status IN ('OPEN', 'REGISTERED')
+ORDER BY auction_start;
+
+SELECT buyer_code, business_name, email
+FROM buyers
+WHERE email IS NULL
+ORDER BY business_name;
+
+SELECT lot_number, auction_start, auction_end
+FROM produce_lots
+WHERE auction_start BETWEEN '2026-09-01' AND '2026-09-30'
+ORDER BY auction_start;
+
+SELECT farmer_code, farm_name, phone
+FROM farmers
+WHERE farm_name LIKE '%Farm%'
+   OR last_name LIKE 'P%'
+ORDER BY farm_name;
+
+-- -----------------------------------------------------------------------------
+-- Aggregates: COUNT, SUM, AVG, MIN, MAX
+-- -----------------------------------------------------------------------------
+
+SELECT
+    COUNT(*) AS lots,
+    SUM(quantity) AS total_qty,
+    AVG(minimum_bid_price) AS avg_min_bid,
+    MIN(minimum_bid_price) AS lowest_min_bid,
+    MAX(minimum_bid_price) AS highest_min_bid
+FROM produce_lots;
+
+-- -----------------------------------------------------------------------------
+-- GROUP BY
+-- -----------------------------------------------------------------------------
+
+SELECT pt.name AS produce_type, COUNT(pl.lot_id) AS lots, SUM(pl.quantity) AS tonnes
+FROM produce_types AS pt
+INNER JOIN produce_lots AS pl ON pl.produce_type_id = pt.produce_type_id
+GROUP BY pt.produce_type_id, pt.name
+ORDER BY tonnes DESC;
+
+-- -----------------------------------------------------------------------------
+-- INNER JOIN (lot + farmer + produce + depot)
+-- -----------------------------------------------------------------------------
+
+SELECT
+    pl.lot_number,
+    CONCAT(f.first_name, ' ', f.last_name) AS farmer,
+    pt.name AS produce_type,
+    d.depot_name,
+    pl.status
+FROM produce_lots AS pl
+INNER JOIN farmers AS f ON f.farmer_id = pl.farmer_id
+INNER JOIN produce_types AS pt ON pt.produce_type_id = pl.produce_type_id
+INNER JOIN depots AS d ON d.depot_id = pl.depot_id
+WHERE pl.status = 'SOLD'
+ORDER BY pl.lot_number;
+
+-- -----------------------------------------------------------------------------
+-- LEFT JOIN (buyers with or without purchases)
+-- -----------------------------------------------------------------------------
+
+SELECT
+    byr.buyer_code,
+    byr.business_name,
+    COUNT(s.sale_id) AS purchases,
+    COALESCE(SUM(s.sale_amount), 0) AS total_spent
+FROM buyers AS byr
+LEFT JOIN successful_sales AS s ON s.buyer_id = byr.buyer_id
+GROUP BY byr.buyer_id, byr.buyer_code, byr.business_name
+ORDER BY total_spent DESC, byr.business_name;
+
+-- -----------------------------------------------------------------------------
+-- Subquery: buyers whose total purchases exceed the average buyer total
+-- -----------------------------------------------------------------------------
+
+SELECT byr.buyer_code, byr.business_name, totals.spent
+FROM buyers AS byr
+INNER JOIN (
+    SELECT buyer_id, SUM(sale_amount) AS spent
+    FROM successful_sales
+    GROUP BY buyer_id
+) AS totals ON totals.buyer_id = byr.buyer_id
+WHERE totals.spent > (
+    SELECT AVG(buyer_total)
+    FROM (
+        SELECT SUM(sale_amount) AS buyer_total
+        FROM successful_sales
+        GROUP BY buyer_id
+    ) AS per_buyer
+)
+ORDER BY totals.spent DESC;
+

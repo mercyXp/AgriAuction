@@ -1,0 +1,82 @@
+{% include "_csrf.html" %}
+<div class="row g-3">
+    <div class="col-md-6">
+        <label class="form-label" for="farmer_id">Farmer</label>
+        <select class="form-select {% if errors.get('farmer_id') %}is-invalid{% endif %}" id="farmer_id" name="farmer_id" required>
+            <option value="">Choose an active farmer</option>
+            {% for farmer in lookups.farmers %}
+            <option value="{{ farmer.farmer_id }}" {% if form.farmer_id|string == farmer.farmer_id|string %}selected{% endif %}>
+                {{ farmer.farmer_code }} — {{ farmer.first_name }} {{ farmer.last_name }} ({{ farmer.farm_name }})
+            </option>
+            {% endfor %}
+        </select>
+        {% if errors.get('farmer_id') %}<div class="invalid-feedback">{{ errors.farmer_id }}</div>{% endif %}
+    </div>
+    <div class="col-md-6">
+        <label class="form-label" for="produce_type_id">Produce type</label>
+        <select class="form-select {% if errors.get('produce_type_id') %}is-invalid{% endif %}" id="produce_type_id" name="produce_type_id" required>
+            <option value="">Choose produce</option>
+            {% for item in lookups.produce_types %}
+            <option value="{{ item.produce_type_id }}" {% if form.produce_type_id|string == item.produce_type_id|string %}selected{% endif %}>
+                {{ item.name }} ({{ item.unit_of_measure }})
+            </option>
+            {% endfor %}
+        </select>
+        {% if errors.get('produce_type_id') %}<div class="invalid-feedback">{{ errors.produce_type_id }}</div>{% endif %}
+    </div>
+    <div class="col-md-6">
+        <label class="form-label" for="grade_id">Quality grade</label>
+        <select class="form-select {% if errors.get('grade_id') %}is-invalid{% endif %}" id="grade_id" name="grade_id" required>
+            <option value="">Choose grade</option>
+            {% for item in lookups.grades %}
+            <option value="{{ item.grade_id }}" {% if form.grade_id|string == item.grade_id|string %}selected{% endif %}>
+                {{ item.grade_code }} — {{ item.grade_name }}
+            </option>
+            {% endfor %}
+        </select>
+        {% if errors.get('grade_id') %}<div class="invalid-feedback">{{ errors.grade_id }}</div>{% endif %}
+    </div>
+    <div class="col-md-6">
+        <label class="form-label" for="depot_id">Depot</label>
+        <select class="form-select {% if errors.get('depot_id') %}is-invalid{% endif %}" id="depot_id" name="depot_id" required>
+            <option value="">Choose depot</option>
+            {% for item in lookups.depots %}
+            <option value="{{ item.depot_id }}" {% if form.depot_id|string == item.depot_id|string %}selected{% endif %}>
+                {{ item.depot_code }} — {{ item.depot_name }}
+            </option>
+            {% endfor %}
+        </select>
+        {% if errors.get('depot_id') %}<div class="invalid-feedback">{{ errors.depot_id }}</div>{% endif %}
+    </div>
+    <div class="col-md-4">
+        <label class="form-label" for="quantity">Quantity</label>
+        <input class="form-control {% if errors.get('quantity') %}is-invalid{% endif %}"
+               id="quantity" name="quantity" type="number" step="0.001" min="0.001" required value="{{ form.quantity }}">
+        {% if errors.get('quantity') %}<div class="invalid-feedback">{{ errors.quantity }}</div>{% endif %}
+    </div>
+    <div class="col-md-4">
+        <label class="form-label" for="minimum_bid_price">Minimum bid (ZMW)</label>
+        <input class="form-control {% if errors.get('minimum_bid_price') %}is-invalid{% endif %}"
+               id="minimum_bid_price" name="minimum_bid_price" type="number" step="0.01" min="0.01" required
+               value="{{ form.minimum_bid_price }}">
+        {% if errors.get('minimum_bid_price') %}<div class="invalid-feedback">{{ errors.minimum_bid_price }}</div>{% endif %}
+    </div>
+    <div class="col-md-4">
+        <label class="form-label" for="inspection_date">Inspection date</label>
+        <input class="form-control {% if errors.get('inspection_date') %}is-invalid{% endif %}"
+               id="inspection_date" name="inspection_date" type="date" required value="{{ form.inspection_date }}">
+        {% if errors.get('inspection_date') %}<div class="invalid-feedback">{{ errors.inspection_date }}</div>{% endif %}
+    </div>
+    <div class="col-md-6">
+        <label class="form-label" for="auction_start">Auction start</label>
+        <input class="form-control {% if errors.get('auction_start') %}is-invalid{% endif %}"
+               id="auction_start" name="auction_start" type="datetime-local" required value="{{ form.auction_start }}">
+        {% if errors.get('auction_start') %}<div class="invalid-feedback">{{ errors.auction_start }}</div>{% endif %}
+    </div>
+    <div class="col-md-6">
+        <label class="form-label" for="auction_end">Auction end</label>
+        <input class="form-control {% if errors.get('auction_end') %}is-invalid{% endif %}"
+               id="auction_end" name="auction_end" type="datetime-local" required value="{{ form.auction_end }}">
+        {% if errors.get('auction_end') %}<div class="invalid-feedback">{{ errors.auction_end }}</div>{% endif %}
+    </div>
+</div>

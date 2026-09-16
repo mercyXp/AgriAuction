@@ -1,0 +1,78 @@
+{% extends "app/base.html" %}
+{% from "_badges.html" import lot_badge %}
+
+{% block title %}{{ lot.lot_number }}{% endblock %}
+{% block page_heading %}{{ lot.lot_number }}{% endblock %}
+
+{% block content %}
+<div class="card agri-card mb-3">
+    <div class="card-body p-4">
+        <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+            {{ lot_badge(lot.status) }}
+            <span class="text-muted">{{ lot.produce_name }} · {{ lot.grade_code }}</span>
+        </div>
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Farmer</dt>
+            <dd class="col-sm-9">{{ lot.farmer_name }} — {{ lot.farm_name }}</dd>
+            <dt class="col-sm-3">Depot</dt>
+            <dd class="col-sm-9">{{ lot.depot_name }} ({{ lot.depot_location }})</dd>
+            <dt class="col-sm-3">Quantity</dt>
+            <dd class="col-sm-9">{{ lot.quantity }} {{ lot.unit_of_measure }}</dd>
+            <dt class="col-sm-3">Inspected</dt>
+            <dd class="col-sm-9">{{ lot.inspection_date }}</dd>
+            <dt class="col-sm-3">Auction window</dt>
+            <dd class="col-sm-9">{{ lot.auction_start }} → {{ lot.auction_end }}</dd>
+            <dt class="col-sm-3">Minimum bid</dt>
+            <dd class="col-sm-9">{{ lot.minimum_bid_price|zmw }}</dd>
+            <dt class="col-sm-3">Highest bid</dt>
+            <dd class="col-sm-9">{{ highest|zmw if highest else "No bids yet" }}</dd>
+        </dl>
+        <div class="mt-4 d-flex flex-wrap gap-2">
+            {% if lot.status == 'REGISTERED' and current_user.role in ['ADMIN', 'OPERATOR'] %}
+            <a class="btn btn-agri" href="{{ url_for('lots.edit', lot_id=lot.lot_id) }}">Edit</a>
+            {% endif %}
+            {% if lot.status == 'REGISTERED' and current_user.role in ['ADMIN', 'AUCTION_CLERK'] %}
+            <form method="post" action="{{ url_for('lots.open_auction', lot_id=lot.lot_id) }}">
+                {% include "_csrf.html" %}
+                <button class="btn btn-agri-gold" type="submit">Open auction</button>
+            </form>
+            {% endif %}
+            {% if lot.status == 'OPEN' and current_user.role in ['ADMIN', 'AUCTION_CLERK'] %}
+            <a class="btn btn-agri" href="{{ url_for('bids.create', lot_id=lot.lot_id) }}">Place bid</a>
+            <form method="post" action="{{ url_for('auctions.close', lot_id=lot.lot_id) }}"
+                  onsubmit="return confirm('Close this auction? The highest valid bid will win.');">
+                {% include "_csrf.html" %}
+                <button class="btn btn-outline-danger" type="submit">Close auction</button>
+            </form>
+            {% endif %}
+            <a class="btn btn-outline-secondary" href="{{ url_for('lots.index') }}">Back to list</a>
+        </div>
+    </div>
+</div>
+
+<div class="app-table-wrap table-responsive">
+    <table class="table app-table mb-0">
+        <thead>
+            <tr><th>Buyer</th><th>Amount</th><th>Time</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+            {% for bid in bids %}
+            <tr>
+                <td>{{ bid.business_name }} <code>{{ bid.buyer_code }}</code></td>
+                <td>{{ bid.bid_amount|zmw }}</td>
+                <td>{{ bid.bid_time }}</td>
+                <td>
+                    {% if bid.status == 'WINNING' %}
+                    <span class="badge badge-winning">WINNING</span>
+                    {% else %}
+                    <span class="badge badge-valid">{{ bid.status }}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4" class="text-muted text-center py-4">No bids on this lot.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

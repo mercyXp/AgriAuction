@@ -1,0 +1,52 @@
+{% extends "app/base.html" %}
+
+{% block title %}Place bid{% endblock %}
+{% block page_heading %}Place bid{% endblock %}
+
+{% block content %}
+<div class="card agri-card">
+    <div class="card-body p-4">
+        <p class="text-muted">Staff record bids on behalf of registered buyers. Only OPEN lots accept bids.</p>
+        {% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
+        <form method="post" novalidate>
+            {% include "_csrf.html" %}
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="lot_id">OPEN lot</label>
+                    <select class="form-select" id="lot_id" name="lot_id" required>
+                        <option value="">Choose a lot</option>
+                        {% for lot in open_lots %}
+                        <option value="{{ lot.lot_id }}" {% if form.lot_id|string == lot.lot_id|string %}selected{% endif %}>
+                            {{ lot.lot_number }} — min {{ lot.minimum_bid_price|zmw }} — ends {{ lot.auction_end }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="buyer_id">Buyer</label>
+                    <select class="form-select" id="buyer_id" name="buyer_id" required>
+                        <option value="">Choose an active buyer</option>
+                        {% for buyer in buyers %}
+                        <option value="{{ buyer.buyer_id }}" {% if form.buyer_id|string == buyer.buyer_id|string %}selected{% endif %}>
+                            {{ buyer.buyer_code }} — {{ buyer.business_name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="bid_amount">Bid amount (ZMW)</label>
+                    <input class="form-control" id="bid_amount" name="bid_amount" type="number" step="0.01" min="0.01"
+                           required value="{{ form.bid_amount }}">
+                </div>
+            </div>
+            <div class="mt-4 d-flex gap-2">
+                <button class="btn btn-agri" type="submit">Record bid</button>
+                <a class="btn btn-outline-secondary" href="{{ url_for('bids.index') }}">Cancel</a>
+            </div>
+        </form>
+        {% if not open_lots %}
+        <p class="text-muted mt-3 mb-0">There are no OPEN lots. Open a REGISTERED lot first.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

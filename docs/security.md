@@ -138,9 +138,10 @@ DROP TABLE bids;
 
 ---
 
-## 5. What this file does **not** do
+## 5. Application vs database (keep this distinction for the viva)
 
-- It does not create staff login rows (that is `seed.sql`).
-- It does not connect Flask yet (Phase 7).
-- It does not implement page permissions for ADMIN vs VIEWER (later phases).
-- It does not store real passwords in the repository.
+- Staff login rows come from `seed.sql` / the staff table.
+- Flask connects as `agriauction_app` using `.env` (Phase 7+).
+- Page permissions use `@role_required` (VIEWER cannot open `/farmers/` even with the URL).
+- Signed-in POST forms send a CSRF token (`app/csrf.py`).
+- Real passwords are not stored in the repository.

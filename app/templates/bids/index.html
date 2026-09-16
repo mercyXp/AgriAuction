@@ -1,0 +1,38 @@
+{% extends "app/base.html" %}
+{% from "_badges.html" import lot_badge %}
+
+{% block title %}Bids{% endblock %}
+{% block page_heading %}Bids{% endblock %}
+
+{% block content %}
+<form class="app-toolbar" method="get">
+    <input class="form-control app-search" type="search" name="q" value="{{ q }}"
+           placeholder="Search lot or buyer" aria-label="Search bids">
+    <button class="btn btn-agri" type="submit">Search</button>
+    <a class="btn btn-agri-gold ms-lg-auto" href="{{ url_for('bids.create') }}">Place bid</a>
+</form>
+{% if open_lots %}
+<p class="text-muted">{{ open_lots|length }} OPEN lot(s) currently accepting bids.</p>
+{% endif %}
+<div class="app-table-wrap table-responsive">
+    <table class="table app-table mb-0">
+        <thead>
+            <tr><th>Time</th><th>Lot</th><th>Buyer</th><th>Amount</th><th>Bid</th><th>Lot status</th></tr>
+        </thead>
+        <tbody>
+            {% for bid in bids %}
+            <tr>
+                <td>{{ bid.bid_time }}</td>
+                <td><a href="{{ url_for('lots.view', lot_id=bid.lot_id) }}"><code>{{ bid.lot_number }}</code></a></td>
+                <td>{{ bid.business_name }}</td>
+                <td>{{ bid.bid_amount|zmw }}</td>
+                <td>{{ bid.status }}</td>
+                <td>{{ lot_badge(bid.lot_status) }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6" class="text-muted text-center py-4">No bids match this search.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "app/base.html" %}
+
+{% block title %}Record collection{% endblock %}
+{% block page_heading %}Record collection{% endblock %}
+
+{% block content %}
+<div class="card agri-card">
+    <div class="card-body p-4">
+        <p class="text-muted">A sale must be fully PAID before produce can leave the depot. Collection updates the sale and the lot together.</p>
+        <form method="post" novalidate>
+            {% include "_csrf.html" %}
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="sale_id">Paid sale</label>
+                    <select class="form-select {% if errors.get('sale_id') %}is-invalid{% endif %}" id="sale_id" name="sale_id" required>
+                        <option value="">Choose a paid sale</option>
+                        {% for sale in sales %}
+                        <option value="{{ sale.sale_id }}" {% if form.sale_id|string == sale.sale_id|string %}selected{% endif %}>
+                            {{ sale.sale_reference }} — {{ sale.business_name }} — {{ sale.quantity }} {{ sale.unit_of_measure }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    {% if errors.get('sale_id') %}<div class="invalid-feedback">{{ errors.sale_id }}</div>{% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="collected_quantity">Quantity collected</label>
+                    <input class="form-control {% if errors.get('collected_quantity') %}is-invalid{% endif %}"
+                           id="collected_quantity" name="collected_quantity" type="number" step="0.001" min="0.001"
+                           required value="{{ form.collected_quantity }}">
+                    {% if errors.get('collected_quantity') %}<div class="invalid-feedback">{{ errors.collected_quantity }}</div>{% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="collection_date">Collection date</label>
+                    <input class="form-control {% if errors.get('collection_date') %}is-invalid{% endif %}"
+                           id="collection_date" name="collection_date" type="datetime-local" required
+                           value="{{ form.collection_date }}">
+                    {% if errors.get('collection_date') %}<div class="invalid-feedback">{{ errors.collection_date }}</div>{% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="collected_by">Collected by</label>
+                    <input class="form-control {% if errors.get('collected_by') %}is-invalid{% endif %}"
+                           id="collected_by" name="collected_by" required value="{{ form.collected_by }}">
+                    {% if errors.get('collected_by') %}<div class="invalid-feedback">{{ errors.collected_by }}</div>{% endif %}
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="notes">Notes (optional)</label>
+                    <input class="form-control" id="notes" name="notes" value="{{ form.notes }}">
+                </div>
+            </div>
+            <div class="mt-4 d-flex gap-2">
+                <button class="btn btn-agri" type="submit">Save collection</button>
+                <a class="btn btn-outline-secondary" href="{{ url_for('collections.index') }}">Cancel</a>
+            </div>
+        </form>
+        {% if not sales %}
+        <p class="text-muted mt-3 mb-0">There are no fully paid sales waiting for collection.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,232 @@
+/* Staff application chrome (not used on the public site). */
+
+.app-body {
+    min-height: 100vh;
+    background: #f4faf6;
+    color: var(--agri-text);
+}
+
+.app-shell {
+    display: flex;
+    min-height: 100vh;
+}
+
+.app-sidebar {
+    width: 16.5rem;
+    background: var(--agri-green-dark);
+    color: #e8f5ee;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.app-sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 1.15rem 1.2rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    color: #fff;
+    text-decoration: none;
+}
+
+.app-sidebar-brand:hover {
+    color: #fff;
+}
+
+.app-sidebar-logo {
+    height: 40px;
+    width: auto;
+    max-width: 150px;
+}
+
+.app-nav {
+    padding: 0.75rem 0.7rem 1rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.app-nav-section {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #9ec9b4;
+    padding: 0.85rem 0.75rem 0.35rem;
+}
+
+.app-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    color: #d8efe4;
+    text-decoration: none;
+    border-radius: 0.55rem;
+    padding: 0.48rem 0.75rem;
+    font-size: 0.92rem;
+    font-weight: 500;
+}
+
+.app-nav-link i {
+    width: 1.15rem;
+    text-align: center;
+    opacity: 0.9;
+}
+
+.app-nav-link:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.app-nav-link.active {
+    background: rgba(224, 180, 41, 0.2);
+    color: var(--agri-gold);
+}
+
+.app-sidebar-user {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.9rem 1.1rem 1.1rem;
+}
+
+.app-sidebar-user .name {
+    font-weight: 600;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+.app-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-topbar {
+    background: #fff;
+    border-bottom: 1px solid #e4eee8;
+    padding: 0.85rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+.app-page-title {
+    font-weight: 700;
+    color: var(--agri-green-dark);
+    margin: 0;
+    font-size: 1.15rem;
+}
+
+.app-content {
+    padding: 1.4rem 1.35rem 2.5rem;
+    flex: 1;
+}
+
+.app-stat {
+    background: #fff;
+    border: 1px solid #e4eee8;
+    border-radius: 1rem;
+    padding: 1.15rem 1.2rem;
+    height: 100%;
+    box-shadow: 0 8px 22px rgba(15, 61, 46, 0.04);
+}
+
+.app-stat .label {
+    color: var(--agri-muted);
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.app-stat .value {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: var(--agri-green-dark);
+    line-height: 1.2;
+}
+
+.app-table-wrap {
+    background: #fff;
+    border: 1px solid #e4eee8;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 8px 22px rgba(15, 61, 46, 0.04);
+}
+
+.app-table thead th {
+    background: #f3faf6;
+    color: var(--agri-green-dark);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 700;
+    border-bottom-color: #e4eee8;
+    white-space: nowrap;
+}
+
+.app-table td {
+    vertical-align: middle;
+}
+
+.badge-active {
+    background: #d9f2e3;
+    color: #0f3d2e;
+}
+
+.badge-open { background: #d9f2e3; color: #0f3d2e; }
+.badge-registered { background: #e8eef5; color: #1e3a5f; }
+.badge-sold { background: #dceee4; color: #0f3d2e; }
+.badge-unsold { background: #f5ead3; color: #6b4e16; }
+.badge-collected { background: #e4e4e4; color: #333; }
+.badge-closed { background: #eee; color: #555; }
+.badge-pending { background: #f5ead3; color: #6b4e16; }
+.badge-paid { background: #d9f2e3; color: #0f3d2e; }
+.badge-winning { background: #0f3d2e; color: #fff; }
+.badge-valid { background: #d9f2e3; color: #0f3d2e; }
+
+.app-chart-card canvas {
+    max-height: 260px;
+}
+
+.app-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.app-search {
+    min-width: 14rem;
+    flex: 1;
+}
+
+@media (max-width: 991.98px) {
+    .app-sidebar {
+        position: fixed;
+        inset: 0 auto 0 0;
+        z-index: 1040;
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+    }
+
+    .app-sidebar.is-open {
+        transform: translateX(0);
+    }
+
+    .app-sidebar-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 61, 46, 0.45);
+        z-index: 1035;
+    }
+
+    .app-sidebar-backdrop.is-open {
+        display: block;
+    }
+}

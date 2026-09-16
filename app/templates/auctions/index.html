@@ -1,0 +1,74 @@
+{% extends "app/base.html" %}
+{% from "_badges.html" import lot_badge %}
+
+{% block title %}Auctions{% endblock %}
+{% block page_heading %}Auctions{% endblock %}
+
+{% block content %}
+<p class="text-muted">Closing an auction calls <code>sp_close_auction</code>. The highest valid bid wins; if there is none the lot is marked UNSOLD. One lot can never have two sales (<code>UNIQUE(lot_id)</code>).</p>
+
+<h2 class="h5 mt-4">OPEN lots</h2>
+<div class="app-table-wrap table-responsive mb-4">
+    <table class="table app-table mb-0">
+        <thead>
+            <tr>
+                <th>Lot</th>
+                <th>Produce</th>
+                <th>Farmer</th>
+                <th>Min bid</th>
+                <th>Highest</th>
+                <th>Bids</th>
+                <th>Ends</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lot in open_lots %}
+            <tr>
+                <td><code>{{ lot.lot_number }}</code></td>
+                <td>{{ lot.produce_type }}</td>
+                <td>{{ lot.farmer }}</td>
+                <td>{{ lot.minimum_bid|zmw }}</td>
+                <td>{{ lot.highest_bid|zmw if lot.highest_bid else "—" }}</td>
+                <td>{{ lot.number_of_bids }}</td>
+                <td>{{ lot.auction_end }}</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-success" href="{{ url_for('lots.view', lot_id=lot.lot_id) }}">View</a>
+                    <form class="d-inline" method="post" action="{{ url_for('auctions.close', lot_id=lot.lot_id) }}"
+                          onsubmit="return confirm('Close {{ lot.lot_number }}?');">
+                        {% include "_csrf.html" %}
+                        <button class="btn btn-sm btn-outline-danger" type="submit">Close auction</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="8" class="text-muted text-center py-4">No OPEN auctions right now.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h2 class="h5">Recently closed</h2>
+<div class="app-table-wrap table-responsive">
+    <table class="table app-table mb-0">
+        <thead>
+            <tr><th>Lot</th><th>Produce</th><th>Status</th><th>Highest bid</th><th></th></tr>
+        </thead>
+        <tbody>
+            {% for lot in recent %}
+            <tr>
+                <td><code>{{ lot.lot_number }}</code></td>
+                <td>{{ lot.produce_type }}</td>
+                <td>{{ lot_badge(lot.auction_status) }}</td>
+                <td>{{ lot.highest_bid|zmw if lot.highest_bid else "—" }}</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-success" href="{{ url_for('auctions.result', lot_id=lot.lot_id) }}">Result</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5" class="text-muted text-center py-4">No closed auctions to show.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

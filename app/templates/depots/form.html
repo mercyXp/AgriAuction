@@ -1,0 +1,39 @@
+{% extends "app/base.html" %}
+
+{% block title %}{% if mode == 'create' %}Add depot{% else %}Edit depot{% endif %}{% endblock %}
+{% block page_heading %}{% if mode == 'create' %}Add depot{% else %}Edit {{ row.depot_code }}{% endif %}{% endblock %}
+
+{% block content %}
+<div class="card agri-card">
+    <div class="card-body p-4">
+        <form method="post" novalidate>
+            {% include "_csrf.html" %}
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="depot_name">Depot name</label>
+                    <input class="form-control {% if errors.get('depot_name') %}is-invalid{% endif %}"
+                           id="depot_name" name="depot_name" required value="{{ form.depot_name }}">
+                    {% if errors.get('depot_name') %}<div class="invalid-feedback">{{ errors.depot_name }}</div>{% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="location">Location</label>
+                    <input class="form-control {% if errors.get('location') %}is-invalid{% endif %}"
+                           id="location" name="location" required value="{{ form.location }}">
+                    {% if errors.get('location') %}<div class="invalid-feedback">{{ errors.location }}</div>{% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="capacity">Capacity</label>
+                    <input class="form-control {% if errors.get('capacity') %}is-invalid{% endif %}"
+                           id="capacity" name="capacity" type="number" step="0.001" min="0.001" required
+                           value="{{ form.capacity }}">
+                    {% if errors.get('capacity') %}<div class="invalid-feedback">{{ errors.capacity }}</div>{% endif %}
+                </div>
+            </div>
+            <div class="mt-4 d-flex gap-2">
+                <button class="btn btn-agri" type="submit">Save</button>
+                <a class="btn btn-outline-secondary" href="{{ url_for('depots.index') }}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

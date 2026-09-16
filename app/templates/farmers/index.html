@@ -1,0 +1,64 @@
+{% extends "app/base.html" %}
+
+{% block title %}Farmers{% endblock %}
+{% block page_heading %}Farmers{% endblock %}
+
+{% block content %}
+<form class="app-toolbar" method="get" action="{{ url_for('farmers.index') }}">
+    <input class="form-control app-search" type="search" name="q" value="{{ q }}"
+           placeholder="Search code, name, farm or phone" aria-label="Search farmers">
+    <select class="form-select" name="status" style="max-width: 11rem;" aria-label="Filter by status">
+        <option value="all" {% if status == 'all' %}selected{% endif %}>All statuses</option>
+        <option value="active" {% if status == 'active' %}selected{% endif %}>Active</option>
+        <option value="inactive" {% if status == 'inactive' %}selected{% endif %}>Inactive</option>
+    </select>
+    <button class="btn btn-agri" type="submit">Search</button>
+    <a class="btn btn-outline-success" href="{{ url_for('farmers.index') }}">Clear</a>
+    <a class="btn btn-agri-gold ms-lg-auto" href="{{ url_for('farmers.create') }}">
+        <i class="bi bi-plus-lg"></i> Register farmer
+    </a>
+</form>
+
+<div class="app-table-wrap table-responsive">
+    <table class="table app-table mb-0">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Farm</th>
+                <th>Phone</th>
+                <th>Registered</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if farmers %}
+                {% for farmer in farmers %}
+                <tr>
+                    <td><code>{{ farmer.farmer_code }}</code></td>
+                    <td>{{ farmer.first_name }} {{ farmer.last_name }}</td>
+                    <td>{{ farmer.farm_name }}</td>
+                    <td>{{ farmer.phone }}</td>
+                    <td>{{ farmer.registration_date }}</td>
+                    <td>
+                        {% if farmer.is_active %}
+                        <span class="badge badge-active">Active</span>
+                        {% else %}
+                        <span class="badge badge-inactive">Inactive</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-end">
+                        <a class="btn btn-sm btn-outline-success" href="{{ url_for('farmers.view', farmer_id=farmer.farmer_id) }}">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="7" class="text-muted text-center py-4">No farmers match this search.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

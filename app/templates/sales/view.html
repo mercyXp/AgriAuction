@@ -1,0 +1,76 @@
+{% extends "app/base.html" %}
+{% from "_badges.html" import sale_badge, lot_badge %}
+
+{% block title %}{{ sale.sale_reference }}{% endblock %}
+{% block page_heading %}{{ sale.sale_reference }}{% endblock %}
+
+{% block content %}
+<div class="card agri-card mb-3">
+    <div class="card-body p-4">
+        <p>{{ sale_badge(sale.status) }} {{ lot_badge(sale.lot_status) }}</p>
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Lot</dt>
+            <dd class="col-sm-9">
+                <a href="{{ url_for('lots.view', lot_id=sale.lot_id) }}"><code>{{ sale.lot_number }}</code></a>
+                — {{ sale.produce_name }} ({{ sale.quantity }} {{ sale.unit_of_measure }})
+            </dd>
+            <dt class="col-sm-3">Buyer</dt>
+            <dd class="col-sm-9">{{ sale.business_name }} <code>{{ sale.buyer_code }}</code> · {{ sale.contact_person }} · {{ sale.phone }}</dd>
+            <dt class="col-sm-3">Winning bid</dt>
+            <dd class="col-sm-9">{{ sale.bid_amount|zmw }} at {{ sale.bid_time }}</dd>
+            <dt class="col-sm-3">Sale amount</dt>
+            <dd class="col-sm-9">{{ sale.sale_amount|zmw }}</dd>
+            <dt class="col-sm-3">Verified payments</dt>
+            <dd class="col-sm-9">{{ sale.total_verified_payments|zmw }}</dd>
+            <dt class="col-sm-3">Outstanding</dt>
+            <dd class="col-sm-9">{{ sale.outstanding_balance|zmw }}</dd>
+        </dl>
+        <div class="mt-4 d-flex flex-wrap gap-2">
+            {% if current_user.role in ['ADMIN', 'FINANCE'] and sale.status in ['PAYMENT_PENDING', 'PARTIALLY_PAID'] %}
+            <a class="btn btn-agri" href="{{ url_for('payments.create', sale_id=sale.sale_id) }}">Record payment</a>
+            {% endif %}
+            {% if current_user.role in ['ADMIN', 'FINANCE'] and sale.status == 'PAID' and not collection %}
+            <a class="btn btn-agri-gold" href="{{ url_for('collections.create', sale_id=sale.sale_id) }}">Record collection</a>
+            {% endif %}
+            <a class="btn btn-outline-secondary" href="{{ url_for('sales.index') }}">Back to sales</a>
+        </div>
+    </div>
+</div>
+
+<h2 class="h5">Payment history</h2>
+<div class="app-table-wrap table-responsive mb-4">
+    <table class="table app-table mb-0">
+        <thead>
+            <tr><th>Reference</th><th>Amount</th><th>Method</th><th>Date</th><th>Status</th><th>Recorded by</th></tr>
+        </thead>
+        <tbody>
+            {% for payment in payments %}
+            <tr>
+                <td><code>{{ payment.payment_reference }}</code></td>
+                <td>{{ payment.amount|zmw }}</td>
+                <td>{{ payment.payment_method }}</td>
+                <td>{{ payment.payment_date }}</td>
+                <td>{{ payment.status }}</td>
+                <td>{{ payment.recorded_by_name }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6" class="text-muted text-center py-4">No payments yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if collection %}
+<h2 class="h5">Collection</h2>
+<div class="card agri-card">
+    <div class="card-body">
+        <p class="mb-0">
+            <code>{{ collection.collection_reference }}</code> —
+            {{ collection.collected_quantity }} collected on {{ collection.collection_date }}
+            by {{ collection.collected_by }}.
+            {% if collection.notes %} Notes: {{ collection.notes }}{% endif %}
+        </p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
