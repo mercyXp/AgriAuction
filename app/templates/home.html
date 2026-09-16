@@ -3,67 +3,304 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<section class="agri-hero py-5">
-    <div class="container py-4">
-        <div class="row align-items-center g-4">
-            <div class="col-lg-7">
-                <p class="text-uppercase small fw-semibold agri-gold-text mb-2">Zambian produce auctions</p>
-                <h1 class="display-5 fw-semibold mb-3">AgriAuction Digital Produce Trading Platform</h1>
+<section class="agri-hero py-5" aria-labelledby="hero-heading">
+    <div class="container py-lg-4">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <p class="section-kicker mb-3">AgriAuction Digital Produce Trading Platform</p>
+                <h1 id="hero-heading" class="display-5 fw-bold mb-3">Digital Agricultural Produce Trading Made Simple</h1>
                 <p class="lead mb-4">
-                    Farmers register produce lots at depots. Registered buyers place bids.
-                    When an auction closes, the highest valid bid becomes a successful sale.
+                    AgriAuction is a digital platform for managing agricultural produce auctions.
+                    It connects farmers with registered buyers and helps authorised staff manage
+                    bidding, sales, payments and collections from one system.
                 </p>
-                <div class="d-flex flex-wrap gap-2">
-                    <span class="badge agri-badge">Farmers</span>
-                    <span class="badge agri-badge">Buyers</span>
-                    <span class="badge agri-badge">Lots</span>
-                    <span class="badge agri-badge">Bids</span>
-                    <span class="badge agri-badge">Sales</span>
-                    <span class="badge agri-badge">Payments</span>
-                </div>
+                <a class="btn btn-agri-gold btn-lg" href="{{ url_for('main.login') }}">Get Started</a>
             </div>
-            <div class="col-lg-5">
-                <div class="card agri-card shadow-sm">
-                    <div class="card-body p-4">
-                        <h2 class="h5 mb-3">Project status</h2>
-                        <p class="mb-2">Phase 1 is complete: the Flask application starts and serves this page.</p>
-                        <ul class="mb-0">
-                            <li>Login and roles come in a later phase.</li>
-                            <li>MySQL tables come in a later phase.</li>
-                            <li>Auction, payment, and collection workflows come after the database is in place.</li>
-                        </ul>
-                    </div>
-                </div>
+            <div class="col-lg-6">
+                <img class="img-fluid hero-graphic"
+                     src="{{ url_for('static', filename='img/hero-depot.svg') }}"
+                     alt="Illustration of a produce depot with maize, tomatoes and grain crates ready for auction.">
             </div>
         </div>
     </div>
 </section>
 
-<section class="py-5">
-    <div class="container">
+<section id="about" class="py-5 section-white" aria-labelledby="about-heading">
+    <div class="container py-lg-3">
+        <div class="row justify-content-center mb-4">
+            <div class="col-lg-8 text-center">
+                <p class="section-kicker">About</p>
+                <h2 id="about-heading" class="fw-bold">A clearer way to run produce auctions</h2>
+            </div>
+        </div>
         <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card h-100 agri-card">
-                    <div class="card-body">
-                        <h2 class="h5">Register produce</h2>
-                        <p class="mb-0">Active farmers send inspected lots to depots with a grade, quantity, and minimum bid.</p>
-                    </div>
-                </div>
+            <div class="col-md-6 col-lg-3">
+                <article class="info-panel h-100">
+                    <h3 class="h5">What AgriAuction is</h3>
+                    <p class="mb-0">
+                        AgriAuction is a web-based produce trading system. Farmers register lots at depots,
+                        buyers place bids, and staff record the sale, payment and collection that follow.
+                    </p>
+                </article>
             </div>
-            <div class="col-md-4">
-                <div class="card h-100 agri-card">
-                    <div class="card-body">
-                        <h2 class="h5">Run auctions</h2>
-                        <p class="mb-0">Buyers bid on open lots. Closing an auction picks the highest valid bid, or marks the lot unsold.</p>
-                    </div>
-                </div>
+            <div class="col-md-6 col-lg-3">
+                <article class="info-panel h-100">
+                    <h3 class="h5">The problem it addresses</h3>
+                    <p class="mb-0">
+                        Paper-based auction records are easy to lose, hard to check, and difficult to report on.
+                        Duplicate sales, missed payments and unclear winners become more likely.
+                    </p>
+                </article>
             </div>
-            <div class="col-md-4">
-                <div class="card h-100 agri-card">
-                    <div class="card-body">
-                        <h2 class="h5">Settle sales</h2>
-                        <p class="mb-0">Payments are recorded against a sale. Collection is allowed only when payment rules are met.</p>
+            <div class="col-md-6 col-lg-3">
+                <article class="info-panel h-100">
+                    <h3 class="h5">How it digitizes auctions</h3>
+                    <p class="mb-0">
+                        Each lot, bid, sale, payment and collection is stored as related records.
+                        Auction closing follows a controlled process so the highest valid bid can become the sale.
+                    </p>
+                </article>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <article class="info-panel h-100">
+                    <h3 class="h5">Why a relational database</h3>
+                    <p class="mb-0">
+                        A centralized MySQL database keeps farmers, buyers, lots, bids, sales, payments and
+                        collections consistent through keys, constraints and transactions.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="audience" class="py-5" aria-labelledby="audience-heading">
+    <div class="container py-lg-3">
+        <div class="text-center mb-4">
+            <p class="section-kicker">Who it is built for</p>
+            <h2 id="audience-heading" class="fw-bold">Built for the people in the auction chain</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-xl-3">
+                <article class="card agri-card h-100">
+                    <div class="card-body p-4">
+                        <div class="icon-circle mb-3" aria-hidden="true"><i class="bi bi-flower1"></i></div>
+                        <h3 class="h5">Farmers</h3>
+                        <p class="mb-0">Farmers can register and manage agricultural produce lots that are offered for auction.</p>
                     </div>
+                </article>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <article class="card agri-card h-100">
+                    <div class="card-body p-4">
+                        <div class="icon-circle mb-3" aria-hidden="true"><i class="bi bi-bag-check"></i></div>
+                        <h3 class="h5">Buyers</h3>
+                        <p class="mb-0">Registered buyers can view eligible auction lots and submit valid bids.</p>
+                    </div>
+                </article>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <article class="card agri-card h-100">
+                    <div class="card-body p-4">
+                        <div class="icon-circle mb-3" aria-hidden="true"><i class="bi bi-person-gear"></i></div>
+                        <h3 class="h5">Auction Staff</h3>
+                        <p class="mb-0">Authorized staff can manage farmers, buyers, produce lots, auctions and successful sales.</p>
+                    </div>
+                </article>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <article class="card agri-card h-100">
+                    <div class="card-body p-4">
+                        <div class="icon-circle mb-3" aria-hidden="true"><i class="bi bi-wallet2"></i></div>
+                        <h3 class="h5">Finance &amp; Operations</h3>
+                        <p class="mb-0">Authorized staff can record payments, monitor outstanding balances and manage produce collections.</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="how-it-works" class="py-5 section-white" aria-labelledby="process-heading">
+    <div class="container py-lg-3">
+        <div class="text-center mb-4">
+            <p class="section-kicker">How it works</p>
+            <h2 id="process-heading" class="fw-bold">From registered produce to collected lots</h2>
+        </div>
+        <ol class="row g-3 process-steps list-unstyled mb-0">
+            <li class="col-6 col-md-4 col-xl">
+                <div class="process-card h-100">
+                    <div class="process-number">1</div>
+                    <i class="bi bi-person-badge" aria-hidden="true"></i>
+                    <h3 class="h6 mt-2 mb-0">Farmer registers produce</h3>
+                </div>
+            </li>
+            <li class="col-6 col-md-4 col-xl">
+                <div class="process-card h-100">
+                    <div class="process-number">2</div>
+                    <i class="bi bi-box-seam" aria-hidden="true"></i>
+                    <h3 class="h6 mt-2 mb-0">Produce lot is created</h3>
+                </div>
+            </li>
+            <li class="col-6 col-md-4 col-xl">
+                <div class="process-card h-100">
+                    <div class="process-number">3</div>
+                    <i class="bi bi-door-open" aria-hidden="true"></i>
+                    <h3 class="h6 mt-2 mb-0">Auction opens</h3>
+                </div>
+            </li>
+            <li class="col-6 col-md-4 col-xl">
+                <div class="process-card h-100">
+                    <div class="process-number">4</div>
+                    <i class="bi bi-hammer" aria-hidden="true"></i>
+                    <h3 class="h6 mt-2 mb-0">Buyers place bids</h3>
+                </div>
+            </li>
+            <li class="col-6 col-md-4 col-xl">
+                <div class="process-card h-100">
+                    <div class="process-number">5</div>
+                    <i class="bi bi-trophy" aria-hidden="true"></i>
+                    <h3 class="h6 mt-2 mb-0">Highest valid bid wins</h3>
+                </div>
+            </li>
+            <li class="col-6 col-md-4 col-xl">
+                <div class="process-card h-100">
+                    <div class="process-number">6</div>
+                    <i class="bi bi-receipt" aria-hidden="true"></i>
+                    <h3 class="h6 mt-2 mb-0">Sale and payment are recorded</h3>
+                </div>
+            </li>
+            <li class="col-6 col-md-4 col-xl">
+                <div class="process-card h-100">
+                    <div class="process-number">7</div>
+                    <i class="bi bi-truck" aria-hidden="true"></i>
+                    <h3 class="h6 mt-2 mb-0">Produce is collected</h3>
+                </div>
+            </li>
+        </ol>
+    </div>
+</section>
+
+<section id="features" class="py-5" aria-labelledby="features-heading">
+    <div class="container py-lg-3">
+        <div class="text-center mb-4">
+            <p class="section-kicker">Features</p>
+            <h2 id="features-heading" class="fw-bold">What the management system will support</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <article class="feature-item h-100">
+                    <i class="bi bi-boxes" aria-hidden="true"></i>
+                    <h3 class="h6">Produce Lot Management</h3>
+                    <p class="mb-0">Inspected lots are stored with farmer, grade, depot, quantity and auction window.</p>
+                </article>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <article class="feature-item h-100">
+                    <i class="bi bi-hammer" aria-hidden="true"></i>
+                    <h3 class="h6">Auction &amp; Bidding</h3>
+                    <p class="mb-0">Only active buyers can bid on open lots that still meet the minimum price.</p>
+                </article>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <article class="feature-item h-100">
+                    <i class="bi bi-clipboard-check" aria-hidden="true"></i>
+                    <h3 class="h6">Sales Management</h3>
+                    <p class="mb-0">A successful sale is created from the winning bid so a lot cannot be sold twice.</p>
+                </article>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <article class="feature-item h-100">
+                    <i class="bi bi-cash-stack" aria-hidden="true"></i>
+                    <h3 class="h6">Payment Tracking</h3>
+                    <p class="mb-0">Verified payments are recorded against a sale without exceeding the sale amount.</p>
+                </article>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <article class="feature-item h-100">
+                    <i class="bi bi-truck" aria-hidden="true"></i>
+                    <h3 class="h6">Collection Management</h3>
+                    <p class="mb-0">Buyers collect purchased produce after the required payment condition is met.</p>
+                </article>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <article class="feature-item h-100">
+                    <i class="bi bi-bar-chart" aria-hidden="true"></i>
+                    <h3 class="h6">Reports &amp; Summaries</h3>
+                    <p class="mb-0">Staff can review supply, purchases, sales and outstanding balances from SQL queries.</p>
+                </article>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <article class="feature-item h-100">
+                    <i class="bi bi-shield-lock" aria-hidden="true"></i>
+                    <h3 class="h6">Role-Based Access</h3>
+                    <p class="mb-0">Application roles such as Admin, Operator, Auction Clerk, Finance and Viewer control what staff can do.</p>
+                </article>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <article class="feature-item h-100">
+                    <i class="bi bi-database" aria-hidden="true"></i>
+                    <h3 class="h6">Relational Database Management</h3>
+                    <p class="mb-0">MySQL stores the records, relationships and business rules that the web application uses.</p>
+                </article>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="team" class="py-5 section-white" aria-labelledby="team-heading">
+    <div class="container py-lg-3">
+        <div class="text-center mb-4">
+            <p class="section-kicker">Meet the team</p>
+            <h2 id="team-heading" class="fw-bold">The students building AgriAuction</h2>
+            <p class="text-muted">Names and roles are placeholders until the group list is confirmed.</p>
+        </div>
+        <div class="row g-4">
+            {% for member in team_members %}
+            <div class="col-md-6 col-xl-3">
+                <article class="card agri-card h-100 text-center">
+                    <div class="card-body p-4">
+                        <div class="team-avatar mx-auto mb-3" aria-hidden="true">
+                            {{ loop.index }}
+                        </div>
+                        <h3 class="h5">[{{ member.placeholder }}]</h3>
+                        <p class="mb-1">{{ member.programme }}</p>
+                        <p class="mb-0"><strong>Role:</strong> [{{ member.role }}]</p>
+                    </div>
+                </article>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="project" class="py-5" aria-labelledby="project-heading">
+    <div class="container py-lg-3">
+        <div class="project-banner p-4 p-lg-5">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-7">
+                    <p class="section-kicker">Project information</p>
+                    <h2 id="project-heading" class="h3 fw-bold">Built for IT212, not as a commercial marketplace</h2>
+                    <p class="mb-0">
+                        AgriAuction is developed as an academic project for IT212 Database Management Systems.
+                        It is designed so students can demonstrate a working relational database application,
+                        not to operate a live agricultural market.
+                    </p>
+                </div>
+                <div class="col-lg-5">
+                    <ul class="concept-list mb-0">
+                        <li>Database design</li>
+                        <li>ER modeling</li>
+                        <li>Relational schema design</li>
+                        <li>Normalization</li>
+                        <li>SQL</li>
+                        <li>CRUD operations</li>
+                        <li>Transactions</li>
+                        <li>Stored procedures</li>
+                        <li>Views</li>
+                        <li>Indexing</li>
+                        <li>Database security</li>
+                    </ul>
                 </div>
             </div>
         </div>
