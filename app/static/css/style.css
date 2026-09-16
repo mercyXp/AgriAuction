@@ -1,0 +1,51 @@
+:root {
+    --agri-green: #2d6a4f;
+    --agri-green-dark: #1b4332;
+    --agri-green-light: #d8f3dc;
+    --agri-gold: #d4a017;
+    --agri-text: #1b1b1b;
+}
+
+body {
+    color: var(--agri-text);
+    background-color: #f7fbf8;
+}
+
+.agri-navbar {
+    background-color: var(--agri-green-dark);
+}
+
+.agri-hero {
+    background: linear-gradient(180deg, var(--agri-green-light) 0%, #f7fbf8 100%);
+}
+
+.agri-gold-text {
+    color: var(--agri-gold);
+}
+
+.agri-card {
+    border: 1px solid #cfe3d6;
+    border-radius: 0.5rem;
+}
+
+.agri-badge {
+    background-color: var(--agri-green);
+    color: #fff;
+    font-weight: 500;
+}
+
+.agri-footer {
+    background-color: var(--agri-green-dark);
+    color: #e9f5ee;
+}
+
+.btn-agri {
+    background-color: var(--agri-green);
+    color: #fff;
+    border: none;
+}
+
+.btn-agri:hover {
+    background-color: var(--agri-green-dark);
+    color: #fff;
+}

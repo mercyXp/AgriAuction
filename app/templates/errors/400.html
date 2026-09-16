@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Bad Request{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card agri-card">
+                <div class="card-body p-4">
+                    <h1 class="h3">400 — Bad request</h1>
+                    <p>The request could not be understood. Please check the information you submitted and try again.</p>
+                    <a class="btn btn-agri" href="{{ url_for('main.home') }}">Return home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

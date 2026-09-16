@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<section class="agri-hero py-5">
+    <div class="container py-4">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-7">
+                <p class="text-uppercase small fw-semibold agri-gold-text mb-2">Zambian produce auctions</p>
+                <h1 class="display-5 fw-semibold mb-3">AgriAuction Digital Produce Trading Platform</h1>
+                <p class="lead mb-4">
+                    Farmers register produce lots at depots. Registered buyers place bids.
+                    When an auction closes, the highest valid bid becomes a successful sale.
+                </p>
+                <div class="d-flex flex-wrap gap-2">
+                    <span class="badge agri-badge">Farmers</span>
+                    <span class="badge agri-badge">Buyers</span>
+                    <span class="badge agri-badge">Lots</span>
+                    <span class="badge agri-badge">Bids</span>
+                    <span class="badge agri-badge">Sales</span>
+                    <span class="badge agri-badge">Payments</span>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card agri-card shadow-sm">
+                    <div class="card-body p-4">
+                        <h2 class="h5 mb-3">Project status</h2>
+                        <p class="mb-2">Phase 1 is complete: the Flask application starts and serves this page.</p>
+                        <ul class="mb-0">
+                            <li>Login and roles come in a later phase.</li>
+                            <li>MySQL tables come in a later phase.</li>
+                            <li>Auction, payment, and collection workflows come after the database is in place.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 agri-card">
+                    <div class="card-body">
+                        <h2 class="h5">Register produce</h2>
+                        <p class="mb-0">Active farmers send inspected lots to depots with a grade, quantity, and minimum bid.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 agri-card">
+                    <div class="card-body">
+                        <h2 class="h5">Run auctions</h2>
+                        <p class="mb-0">Buyers bid on open lots. Closing an auction picks the highest valid bid, or marks the lot unsold.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 agri-card">
+                    <div class="card-body">
+                        <h2 class="h5">Settle sales</h2>
+                        <p class="mb-0">Payments are recorded against a sale. Collection is allowed only when payment rules are met.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

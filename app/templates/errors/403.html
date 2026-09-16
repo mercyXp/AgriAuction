@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Forbidden{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card agri-card">
+                <div class="card-body p-4">
+                    <h1 class="h3">403 — You do not have permission</h1>
+                    <p>You do not have permission to perform this action. Sign in with an account that has the required role, or return to the home page.</p>
+                    <a class="btn btn-agri" href="{{ url_for('main.home') }}">Return home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
