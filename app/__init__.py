@@ -24,11 +24,10 @@ def create_app():
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev-secret-change-me")
     app.config["FLASK_ENV"] = os.getenv("FLASK_ENV", "development")
 
-    # Database settings are loaded now so later phases can use them.
-    # The actual MySQL connection is implemented in Phase 7.
-    from app.database import load_db_config
+    from app.database import init_app as init_db_app, load_db_config
 
     app.config.update(load_db_config())
+    init_db_app(app)
 
     from app.routes.main import main_bp
 
