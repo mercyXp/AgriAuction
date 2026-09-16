@@ -43,6 +43,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('main.home') }}#team">Team</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'main.project' %}active{% endif %}"
+                           href="{{ url_for('main.project') }}">Project</a>
+                    </li>
                     {% if current_user %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.endpoint == 'dashboard.index' %}active{% endif %}"
@@ -117,8 +121,8 @@
                     <h2 class="h6 footer-heading">Resources</h2>
                     <ul class="list-unstyled footer-links">
                         <li><a href="{{ url_for('main.home') }}#features">Features</a></li>
-                        <li><a href="{{ url_for('main.home') }}#project">Project Information</a></li>
-                        <li><a href="{{ url_for('main.home') }}#project">Documentation</a></li>
+                        <li><a href="{{ url_for('main.project') }}">Project Information</a></li>
+                        <li><a href="{{ url_for('main.project') }}#compulsory">Documentation</a></li>
                     </ul>
                 </div>
                 <div class="col-6 col-md-4 col-lg-2">

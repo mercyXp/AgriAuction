@@ -11,7 +11,7 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 5.5rem;
+    scroll-padding-top: 6.5rem;
 }
 
 body {
@@ -33,6 +33,7 @@ body {
 .agri-navbar {
     background-color: #0f3d2e;
     background-color: var(--agri-green-dark);
+    z-index: 1050;
 }
 
 .navbar-brand {
@@ -415,6 +416,245 @@ body {
 
 .academic-list li {
     margin-bottom: 0.2rem;
+}
+
+.project-hero {
+    background: linear-gradient(180deg, #f3faf5 0%, #ffffff 100%);
+    padding: 3.5rem 0 2.5rem;
+    border-bottom: 1px solid #e4eee8;
+}
+
+.project-meta {
+    color: var(--agri-green-dark);
+    font-size: 0.92rem;
+    font-weight: 500;
+}
+
+.project-meta li {
+    background: #fff;
+    border: 1px solid #e4eee8;
+    border-radius: 999px;
+    padding: 0.4rem 0.9rem;
+}
+
+.project-layout {
+    scroll-margin-top: 5.5rem;
+}
+
+.project-toc {
+    position: sticky;
+    top: 6.25rem;
+    background: #f7fbf8;
+    border: 1px solid #e4eee8;
+    border-radius: 1rem;
+    padding: 1.15rem 1.25rem;
+}
+
+.project-toc-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--agri-green);
+    margin-bottom: 0.75rem;
+}
+
+.project-toc a {
+    display: block;
+    color: var(--agri-text);
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 0.28rem 0;
+    border-left: 2px solid transparent;
+    padding-left: 0.65rem;
+}
+
+.project-toc a:hover,
+.project-toc a:focus {
+    color: var(--agri-green);
+    border-left-color: var(--agri-gold);
+}
+
+.project-section {
+    margin-bottom: 3.25rem;
+    scroll-margin-top: 7.75rem;
+}
+
+.project-section h2 {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--agri-green-dark);
+    margin-bottom: 1rem;
+}
+
+.project-section h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--agri-green-dark);
+    margin-top: 1.25rem;
+    margin-bottom: 0.65rem;
+}
+
+.project-lead {
+    font-size: 1.05rem;
+    color: var(--agri-muted);
+}
+
+.project-pipeline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.5rem 0 0;
+}
+
+.project-pipeline li {
+    background: var(--agri-green-dark);
+    color: #fff;
+    border-radius: 999px;
+    padding: 0.4rem 0.85rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.project-pipeline li:not(:last-child)::after {
+    content: "→";
+    margin-left: 0.55rem;
+    color: var(--agri-gold);
+}
+
+.project-card {
+    background: #fff;
+    border: 1px solid #e4eee8;
+    border-radius: 1rem;
+    padding: 1.35rem 1.4rem;
+    box-shadow: 0 8px 24px rgba(15, 61, 46, 0.04);
+}
+
+.project-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.6rem;
+}
+
+.project-card ul {
+    margin-bottom: 0.75rem;
+    padding-left: 1.1rem;
+}
+
+.project-callout {
+    background: #fff7e0;
+    border-left: 4px solid var(--agri-gold);
+    border-radius: 0.5rem;
+    padding: 0.9rem 1rem;
+    margin: 1.25rem 0;
+}
+
+.project-bullets {
+    padding-left: 1.15rem;
+    color: var(--agri-muted);
+}
+
+.project-bullets li {
+    margin-bottom: 0.45rem;
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.25rem;
+}
+
+.project-tags li {
+    background: var(--agri-green-light);
+    color: var(--agri-green-dark);
+    border-radius: 999px;
+    padding: 0.35rem 0.8rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.project-rule {
+    background: #f7fbf8;
+    border: 1px solid #d7ebe0;
+    border-radius: 0.85rem;
+    padding: 1rem 1.1rem;
+    font-weight: 600;
+    color: var(--agri-green-dark);
+    height: 100%;
+}
+
+.project-reqs {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: req;
+}
+
+.project-reqs > li {
+    counter-increment: req;
+    position: relative;
+    padding: 1.1rem 1.15rem 1.1rem 3.6rem;
+    border: 1px solid #e4eee8;
+    border-radius: 0.9rem;
+    margin-bottom: 0.75rem;
+    background: #fff;
+}
+
+.project-reqs > li::before {
+    content: counter(req);
+    position: absolute;
+    left: 1rem;
+    top: 1.05rem;
+    width: 1.85rem;
+    height: 1.85rem;
+    border-radius: 50%;
+    background: var(--agri-green);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.project-reqs h3 {
+    margin-top: 0;
+    margin-bottom: 0.35rem;
+    font-size: 1rem;
+}
+
+.project-reqs p {
+    margin-bottom: 0;
+    color: var(--agri-muted);
+    font-size: 0.94rem;
+}
+
+.project-check {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 0.55rem 1.25rem;
+}
+
+.project-check li {
+    position: relative;
+    padding-left: 1.7rem;
+    color: var(--agri-text);
+}
+
+.project-check li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.28rem;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid var(--agri-green);
+    border-radius: 0.2rem;
 }
 
 .agri-footer {

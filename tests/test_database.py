@@ -71,8 +71,9 @@ class DatabaseConnectionTests(unittest.TestCase):
 
     def test_public_pages_do_not_need_mysql(self):
         client = self.app.test_client()
-        response = client.get("/")
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(client.get("/").status_code, 200)
+        self.assertEqual(client.get("/project").status_code, 200)
+        self.assertIn(b"Group 2 Project Brief", client.get("/project").data)
 
     def test_live_mysql_if_account_exists(self):
         try:

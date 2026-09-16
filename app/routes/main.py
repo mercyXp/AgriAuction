@@ -52,6 +52,12 @@ def home():
     return render_template("home.html", team_members=TEAM_MEMBERS)
 
 
+@main_bp.route("/project")
+def project():
+    """IT212 Group 2 project brief and submission requirements."""
+    return render_template("project.html")
+
+
 @main_bp.route("/login", methods=["GET", "POST"])
 def login():
     """Staff login: look up the account, check bcrypt, start a session."""

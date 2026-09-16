@@ -1,0 +1,310 @@
+{% extends "base.html" %}
+
+{% block title %}Project Information{% endblock %}
+
+{% block content %}
+<header class="project-hero">
+    <div class="container">
+        <p class="section-kicker mb-3">IT212 Database Management Systems</p>
+        <h1 class="hero-title mb-3">Group 2 Project Brief</h1>
+        <p class="hero-lead mb-4">
+            AgriAuction Digital Produce Trading Platform — a relational database and working
+            application for agricultural produce auctions.
+        </p>
+        <ul class="project-meta list-unstyled d-flex flex-wrap gap-3 mb-0">
+            <li><i class="bi bi-people-fill me-1" aria-hidden="true"></i> Groups of at least 5</li>
+            <li><i class="bi bi-calendar-event me-1" aria-hidden="true"></i> Deadline 12 October 2026</li>
+            <li><i class="bi bi-github me-1" aria-hidden="true"></i> GitHub repository required</li>
+            <li><i class="bi bi-mic-fill me-1" aria-hidden="true"></i> Live class demonstration</li>
+        </ul>
+    </div>
+</header>
+
+<div class="container project-layout py-5">
+    <div class="row g-5">
+        <aside class="col-lg-3 d-none d-lg-block">
+            <nav class="project-toc" aria-label="Project page sections">
+                <p class="project-toc-title">On this page</p>
+                <ol class="list-unstyled mb-0">
+                    <li><a href="#overview">In short</a></li>
+                    <li><a href="#instructions">General instructions</a></li>
+                    <li><a href="#scenario">Scenario &amp; problems</a></li>
+                    <li><a href="#scope">What we must develop</a></li>
+                    <li><a href="#operations">Application operations</a></li>
+                    <li><a href="#compulsory">Compulsory requirements</a></li>
+                    <li><a href="#minimum">Minimum functionality</a></li>
+                    <li><a href="#viva">Live demonstration</a></li>
+                    <li><a href="#checklist">Submission checklist</a></li>
+                </ol>
+            </nav>
+        </aside>
+
+        <div class="col-lg-9">
+            <section id="overview" class="project-section" aria-labelledby="overview-heading">
+                <h2 id="overview-heading">In short</h2>
+                <p class="project-lead">
+                    Farmers register produce lots. Buyers bid. The winning bid becomes a sale.
+                    Payments and collection follow. The whole flow sits on a normalised MySQL
+                    database with a working Flask application — including security, transactions,
+                    reports, views, procedures, indexes, backup and CRUD.
+                </p>
+                <ol class="project-pipeline list-unstyled">
+                    <li>Farmers</li>
+                    <li>Produce lots</li>
+                    <li>Bidding</li>
+                    <li>Winning bid</li>
+                    <li>Sale</li>
+                    <li>Payment</li>
+                    <li>Collection</li>
+                </ol>
+            </section>
+
+            <section id="instructions" class="project-section" aria-labelledby="instructions-heading">
+                <h2 id="instructions-heading">1. General instructions</h2>
+                <p>
+                    Students work in groups of at least five. Each group is assigned one scenario
+                    and must design and implement its own database and application.
+                </p>
+                <div class="project-callout">
+                    <strong>Incomplete work:</strong> a database without a working application,
+                    or an application that does not connect to the implemented database, is not accepted.
+                </div>
+                <div class="row g-4 mt-1">
+                    <div class="col-md-6">
+                        <article class="project-card h-100">
+                            <h3>Approved DBMS</h3>
+                            <ul>
+                                <li>MySQL Workbench</li>
+                                <li>Microsoft SQL Server</li>
+                            </ul>
+                            <p class="small text-muted mb-0">This group uses <strong>MySQL 8</strong> with MySQL Workbench.</p>
+                        </article>
+                    </div>
+                    <div class="col-md-6">
+                        <article class="project-card h-100">
+                            <h3>Allowed application tools</h3>
+                            <p class="mb-2">Python, Java, C++, PHP, JavaScript, HTML, CSS.</p>
+                            <p class="small text-muted mb-0">This group uses <strong>Python Flask</strong>, HTML, CSS, Bootstrap 5 and vanilla JavaScript.</p>
+                        </article>
+                    </div>
+                </div>
+                <ul class="project-bullets mt-4">
+                    <li>The system must contain realistic sample data and demonstrate meaningful business operations — not only basic forms.</li>
+                    <li>Submit a GitHub repository with a concise technical report, database scripts and application source code.</li>
+                    <li>Each group must give a live class demonstration. Every student must participate and may be asked to explain or change any part of the database or application.</li>
+                    <li><strong>Deadline: 12 October 2026.</strong></li>
+                </ul>
+            </section>
+
+            <section id="scenario" class="project-section" aria-labelledby="scenario-heading">
+                <h2 id="scenario-heading">2. Group 2 scenario</h2>
+                <h3>AgriAuction Digital Produce Trading Platform</h3>
+                <p>
+                    AgriAuction runs agricultural produce trading centres. Registered farmers bring
+                    crops such as maize, soya beans, groundnuts and beans. Produce is inspected,
+                    graded and registered as a <strong>produce lot</strong>. Registered buyers place
+                    bids. The successful bid becomes a sale. Payments and collection of the purchased
+                    produce are then recorded.
+                </p>
+                <h3>Current problems</h3>
+                <p>The organisation currently uses several spreadsheets. That makes it hard to:</p>
+                <ul class="project-bullets">
+                    <li>See the current status of a produce lot.</li>
+                    <li>Identify the highest valid bid.</li>
+                    <li>Prevent a lot from being sold twice.</li>
+                    <li>Reconcile buyer payments with completed sales.</li>
+                    <li>Analyse average prices by crop and grade.</li>
+                    <li>Analyse volumes supplied by farmers.</li>
+                    <li>Analyse purchasing activity by buyers.</li>
+                </ul>
+            </section>
+
+            <section id="scope" class="project-section" aria-labelledby="scope-heading">
+                <h2 id="scope-heading">3. What Group 2 must develop</h2>
+                <p>A database and application to manage:</p>
+                <ul class="project-tags">
+                    <li>Farmers</li>
+                    <li>Buyers</li>
+                    <li>Produce types</li>
+                    <li>Produce lots</li>
+                    <li>Quality grades</li>
+                    <li>Depots</li>
+                    <li>Bids</li>
+                    <li>Successful sales</li>
+                    <li>Payments</li>
+                    <li>Collections</li>
+                </ul>
+                <h3>Important business rules</h3>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="project-rule">Prevent bids on closed lots.</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="project-rule">Prevent the same produce lot from being sold more than once.</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="operations" class="project-section" aria-labelledby="operations-heading">
+                <h2 id="operations-heading">4. Required application operations</h2>
+                <p>Users should be able to:</p>
+                <ul class="project-bullets">
+                    <li>Register farmers and buyers.</li>
+                    <li>Create produce lots.</li>
+                    <li>Enter bids.</li>
+                    <li>Close an auction and identify or record the winning bid.</li>
+                    <li>Process payments and record collection.</li>
+                </ul>
+                <article class="project-card mt-4">
+                    <h3>Required transaction</h3>
+                    <p>
+                        At least one multi-step operation must use transaction control.
+                        For Group 2 the natural example is <strong>closing an auction and creating the corresponding sale</strong>.
+                    </p>
+                    <p class="mb-0">
+                        If processing is incomplete or something fails, the database must not leave
+                        inconsistent records (atomicity).
+                    </p>
+                </article>
+            </section>
+
+            <section id="compulsory" class="project-section" aria-labelledby="compulsory-heading">
+                <h2 id="compulsory-heading">5. Compulsory requirements</h2>
+                <p>These apply to all groups. Group 2 must implement every item below.</p>
+
+                <ol class="project-reqs">
+                    <li>
+                        <h3>Requirements analysis &amp; business rules</h3>
+                        <p>Identify main users, system requirements and important business rules. Separate rules enforced by the database from rules handled by the application.</p>
+                    </li>
+                    <li>
+                        <h3>Conceptual database design</h3>
+                        <p>Create an ERD showing entities, attributes, relationships, cardinalities and identifiers.</p>
+                    </li>
+                    <li>
+                        <h3>Relational schema</h3>
+                        <p>Convert the ERD into tables. Identify primary keys, foreign keys and constraints.</p>
+                    </li>
+                    <li>
+                        <h3>Normalization</h3>
+                        <p>Show 1NF, 2NF and 3NF. Explain the dependencies removed at each stage.</p>
+                    </li>
+                    <li>
+                        <h3>Database implementation</h3>
+                        <p>Implement the database in MySQL Workbench or SQL Server: tables, data types, primary keys, foreign keys and integrity constraints.</p>
+                    </li>
+                    <li>
+                        <h3>Sample data</h3>
+                        <p>Use realistic data. Major tables should normally have at least 10 meaningful records so queries, reports and the application can be demonstrated.</p>
+                    </li>
+                    <li>
+                        <h3>SQL queries</h3>
+                        <p>Demonstrate DDL, DML, SELECT, filtering, sorting, aggregate functions and GROUP BY.</p>
+                    </li>
+                    <li>
+                        <h3>Joins &amp; subqueries</h3>
+                        <p>Demonstrate INNER JOIN, at least one other appropriate JOIN, and at least one meaningful subquery.</p>
+                    </li>
+                    <li>
+                        <h3>Views</h3>
+                        <p>Create at least two useful database views.</p>
+                    </li>
+                    <li>
+                        <h3>Stored procedures</h3>
+                        <p>Create at least two meaningful stored procedures relevant to AgriAuction.</p>
+                    </li>
+                    <li>
+                        <h3>Transactions &amp; ACID</h3>
+                        <p>Implement at least one multi-step business operation with transaction control — for example close auction → determine winner → create sale. Be able to explain Atomicity, Consistency, Isolation and Durability.</p>
+                    </li>
+                    <li>
+                        <h3>Indexing &amp; query optimization</h3>
+                        <p>Create appropriate indexes for frequently searched or joined data and explain why they were selected.</p>
+                    </li>
+                    <li>
+                        <h3>Database security</h3>
+                        <p>Implement database users/roles, different privileges, authentication, authorization and least privilege. Do not hard-code sensitive credentials in the application.</p>
+                    </li>
+                    <li>
+                        <h3>Backup &amp; recovery</h3>
+                        <p>Create a database backup, demonstrate or document restoration, and explain what data could be lost under the backup strategy.</p>
+                    </li>
+                    <li>
+                        <h3>Application development</h3>
+                        <p>Develop a working application connected to the implemented database. It must not only display static or hard-coded information.</p>
+                    </li>
+                    <li>
+                        <h3>CRUD</h3>
+                        <p>Demonstrate Create, Read, Update and Delete while respecting business rules and user privileges.</p>
+                    </li>
+                    <li>
+                        <h3>Business transaction</h3>
+                        <p>Implement at least one scenario-specific process that affects multiple related records, with validation and transaction handling.</p>
+                    </li>
+                </ol>
+            </section>
+
+            <section id="minimum" class="project-section" aria-labelledby="minimum-heading">
+                <h2 id="minimum-heading">6. Minimum application functionality</h2>
+                <p>The Group 2 application must include:</p>
+                <ul class="project-bullets">
+                    <li>Login or appropriate user identification.</li>
+                    <li>Data-entry forms for major entities.</li>
+                    <li>Working CRUD operations.</li>
+                    <li>Validation of important business rules.</li>
+                    <li>Search and filter functionality.</li>
+                    <li>At least two useful reports or management summaries.</li>
+                    <li>At least one multi-table business transaction.</li>
+                    <li>Clear error handling.</li>
+                    <li>A direct connection to the database.</li>
+                </ul>
+            </section>
+
+            <section id="viva" class="project-section" aria-labelledby="viva-heading">
+                <h2 id="viva-heading">7. Live demonstration / oral defence</h2>
+                <p>
+                    The lecturer may ask any group member to demonstrate or explain the system.
+                    Be prepared to:
+                </p>
+                <ul class="project-bullets">
+                    <li>Explain an entity, relationship, primary key or foreign key from the ERD.</li>
+                    <li>Explain how a table was normalised and identify a functional dependency.</li>
+                    <li>Write or modify an SQL query; run a JOIN, a subquery, a view and a stored procedure.</li>
+                    <li>Perform CRUD through the application and verify the change in the database.</li>
+                    <li>Explain the transaction and what happens if part of it fails.</li>
+                    <li>Explain an index and why it was created.</li>
+                    <li>Demonstrate database-user permissions.</li>
+                    <li>Show the backup and explain restoration.</li>
+                    <li>Explain where NoSQL could complement the relational database.</li>
+                </ul>
+            </section>
+
+            <section id="checklist" class="project-section" aria-labelledby="checklist-heading">
+                <h2 id="checklist-heading">8. Group 2 submission checklist</h2>
+                <p>The final GitHub submission should contain:</p>
+                <ul class="project-check">
+                    <li>Technical report</li>
+                    <li>ER diagram</li>
+                    <li>Relational schema</li>
+                    <li>Normalization evidence</li>
+                    <li>Complete SQL database creation scripts</li>
+                    <li>Sample / seed data scripts</li>
+                    <li>At least two views</li>
+                    <li>At least two stored procedures</li>
+                    <li>SQL queries, joins and subqueries</li>
+                    <li>Transaction / ACID implementation</li>
+                    <li>Indexes and optimization explanation</li>
+                    <li>Security / users / roles</li>
+                    <li>Database backup / export file</li>
+                    <li>Application source code</li>
+                    <li>Required configuration (no secrets in Git)</li>
+                    <li>Working application connected to the database</li>
+                    <li>Screenshots if desired</li>
+                    <li>GitHub repository</li>
+                    <li>Live demonstration preparation</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -266,38 +266,34 @@
 <section id="project" class="academic-band reveal" aria-labelledby="project-heading">
     <div class="container">
         <div class="row align-items-center g-4">
-            <div class="col-lg-6">
+            <div class="col-lg-7">
                 <div class="d-flex gap-3 align-items-start">
                     <div class="academic-icon" aria-hidden="true">
                         <i class="bi bi-mortarboard-fill"></i>
                     </div>
                     <div>
+                        <p class="section-kicker mb-2">IT212 · Group 2</p>
                         <h2 id="project-heading" class="academic-title">Academic Project</h2>
-                        <p class="mb-0">AgriAuction is developed as an academic project for IT212 Database Management Systems.</p>
+                        <p class="mb-3">
+                            AgriAuction is Group 2’s IT212 Database Management Systems project:
+                            a MySQL database and working web application for produce auctions,
+                            from farmer registration through bidding, sale, payment and collection.
+                        </p>
+                        <p class="mb-0">
+                            <a class="btn btn-agri rounded-pill px-4" href="{{ url_for('main.project') }}">
+                                Project information <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </p>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <p class="fw-semibold mb-2">This project demonstrates the practical use of:</p>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <ul class="academic-list">
-                            <li>Database Design</li>
-                            <li>ER Modelling</li>
-                            <li>Relational Schema Design</li>
-                            <li>Normalization</li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-6">
-                        <ul class="academic-list">
-                            <li>SQL &amp; CRUD Operations</li>
-                            <li>Transactions</li>
-                            <li>Stored Procedures</li>
-                            <li>Indexing</li>
-                            <li>Database Security</li>
-                        </ul>
-                    </div>
-                </div>
+            <div class="col-lg-5">
+                <p class="fw-semibold mb-2">This project demonstrates:</p>
+                <ul class="academic-list">
+                    <li>ER modelling, schema design and 3NF</li>
+                    <li>SQL, views, procedures, indexes and transactions</li>
+                    <li>Security, backup, CRUD and a live demonstration</li>
+                </ul>
             </div>
         </div>
     </div>
