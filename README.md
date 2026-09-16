@@ -2,14 +2,13 @@
 
 AgriAuction is a web application for an **IT212 Database Management Systems** project. Farmers register produce lots at depots. Buyers bid on open lots. When an auction closes, the highest valid bid becomes a successful sale. Payments and collections are recorded afterwards.
 
-This repository is being built **phase by phase**. Phase 1 only starts the Flask application and a public home page.
 
 ## Technology stack
 
 - HTML5, CSS3, Bootstrap 5, Jinja2
 - Python 3 and Flask
-- MySQL 8 (from Phase 2 onwards)
-- Railway for later deployment
+- MySQL 8 
+- Railway for deployment
 
 ## Architecture
 
