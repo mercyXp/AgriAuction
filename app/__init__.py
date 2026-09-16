@@ -6,6 +6,7 @@ the same way without running the development server.
 """
 
 import os
+from datetime import timedelta
 
 from dotenv import load_dotenv
 from flask import Flask
@@ -24,14 +25,31 @@ def create_app():
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev-secret-change-me")
     app.config["FLASK_ENV"] = os.getenv("FLASK_ENV", "development")
 
+    # Session cookies: HttpOnly and SameSite always. Secure only on HTTPS
+    # (production). Local http://127.0.0.1 must keep Secure off or the
+    # browser will not store the cookie.
+    is_production = os.getenv("FLASK_ENV") == "production"
+    app.config["SESSION_COOKIE_HTTPONLY"] = True
+    app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+    app.config["SESSION_COOKIE_SECURE"] = is_production
+    app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=14)
+
     from app.database import init_app as init_db_app, load_db_config
 
     app.config.update(load_db_config())
     init_db_app(app)
 
+    from app.auth import current_session_user
+
+    @app.context_processor
+    def inject_current_user():
+        return {"current_user": current_session_user()}
+
     from app.routes.main import main_bp
+    from app.routes.dashboard import dashboard_bp
 
     app.register_blueprint(main_bp)
+    app.register_blueprint(dashboard_bp)
 
     register_error_handlers(app)
 

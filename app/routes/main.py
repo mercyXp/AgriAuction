@@ -1,6 +1,23 @@
 """Public pages that do not require a login."""
 
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import (
+    Blueprint,
+    flash,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+)
+
+from app.auth import (
+    find_staff_by_username,
+    login_user,
+    logout_user,
+    password_matches,
+    safe_next_url,
+)
+from app.database import MySQLError
 
 main_bp = Blueprint("main", __name__)
 
@@ -37,15 +54,49 @@ def home():
 
 @main_bp.route("/login", methods=["GET", "POST"])
 def login():
-    """Public login page — the entry point to the management system.
+    """Staff login: look up the account, check bcrypt, start a session."""
+    if session.get("user_id"):
+        return redirect(url_for("dashboard.index"))
 
-    Password checking and sessions are implemented in a later phase.
-    Submitting the form does not sign anyone in.
-    """
     if request.method == "POST":
-        flash(
-            "Staff login will be enabled in the authentication phase. No account was signed in.",
-            "info",
-        )
-        return redirect(url_for("main.login"))
-    return render_template("login.html")
+        username = (request.form.get("username") or "").strip()
+        password = request.form.get("password") or ""
+        remember = bool(request.form.get("remember"))
+
+        if not username or not password:
+            flash("Enter your username and password.", "danger")
+            return render_template("login.html", username=username)
+
+        try:
+            staff = find_staff_by_username(username)
+        except RuntimeError:
+            flash(
+                "Cannot reach the database. Check that MySQL is running and .env is set.",
+                "danger",
+            )
+            return render_template("login.html", username=username)
+        except MySQLError:
+            flash("A database error occurred while signing in.", "danger")
+            return render_template("login.html", username=username)
+
+        if staff is None or not password_matches(password, staff["password_hash"]):
+            flash("Invalid username or password.", "danger")
+            return render_template("login.html", username=username)
+
+        if not staff["is_active"]:
+            flash("This staff account is inactive. Contact an administrator.", "danger")
+            return render_template("login.html", username=username)
+
+        login_user(staff, remember=remember)
+        flash("Signed in successfully.", "success")
+        return redirect(safe_next_url(url_for("dashboard.index")))
+
+    return render_template("login.html", username="")
+
+
+@main_bp.route("/logout", methods=["POST"])
+def logout():
+    """End the staff session."""
+    logout_user()
+    flash("You have been signed out.", "success")
+    return redirect(url_for("main.login"))

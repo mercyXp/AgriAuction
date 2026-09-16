@@ -531,6 +531,16 @@ body {
     box-shadow: 0 0 0 0.2rem rgba(31, 107, 74, 0.2);
 }
 
+.agri-card {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 12px 30px rgba(15, 61, 46, 0.08);
+}
+
+.login-panel .alert {
+    font-size: 0.95rem;
+}
+
 @media (max-width: 991.98px) {
     .process-track {
         grid-template-columns: repeat(4, minmax(0, 1fr));

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Administration{% endblock %}
+
+{% block content %}
+<section class="section-block section-white">
+    <div class="container py-4 py-lg-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card agri-card">
+                    <div class="card-body p-4 p-lg-5">
+                        <h1 class="h3 fw-bold mb-3">Administration</h1>
+                        <p>
+                            This page is protected with <code>@role_required("ADMIN")</code>.
+                            Staff, schema tools and database information will be added later.
+                            Non-admin accounts receive a 403 response, even if they know the URL.
+                        </p>
+                        <a class="btn btn-agri" href="{{ url_for('dashboard.index') }}">Back to dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

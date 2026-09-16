@@ -4,6 +4,8 @@
 
 {% block body_class %}login-page{% endblock %}
 
+{% block flash_messages %}{% endblock %}
+
 {% block content %}
 <section class="login-shell" aria-labelledby="login-heading">
     <div class="container-fluid px-0">
@@ -16,11 +18,25 @@
                     <h1 id="login-heading" class="h3 fw-bold">Welcome back</h1>
                     <p class="text-muted mb-4">Sign in to the AgriAuction management system. Staff login is the entry point for farmers, lots, auctions, sales and payments.</p>
 
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
                     <form method="post" action="{{ url_for('main.login') }}" novalidate>
+                        {% if request.args.get('next') %}
+                            <input type="hidden" name="next" value="{{ request.args.get('next') }}">
+                        {% endif %}
                         <div class="mb-3">
                             <label class="form-label" for="username">Username</label>
                             <input class="form-control form-control-lg" type="text" id="username" name="username"
-                                   autocomplete="username" required>
+                                   autocomplete="username" required value="{{ username|default('') }}">
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="password">Password</label>
@@ -28,15 +44,20 @@
                                    autocomplete="current-password" required>
                         </div>
                         <div class="form-check mb-4">
-                            <input class="form-check-input" type="checkbox" id="remember" name="remember">
+                            <input class="form-check-input" type="checkbox" id="remember" name="remember" value="1">
                             <label class="form-check-label" for="remember">Remember me</label>
                         </div>
                         <button class="btn btn-agri btn-lg w-100" type="submit">Sign In</button>
                     </form>
 
-                    <p class="small text-muted mt-4 mb-0">
-                        Staff login becomes active in the authentication phase. Submitting this form does not create a session.
-                    </p>
+                    <p class="small text-muted mt-4 mb-2">Demo staff accounts (fictional):</p>
+                    <ul class="small text-muted ps-3 mb-0">
+                        <li><code>chanda.admin</code> / <code>Admin#2026</code></li>
+                        <li><code>mwansa.operator</code> / <code>Operator#2026</code></li>
+                        <li><code>tembo.clerk</code> / <code>Clerk#2026</code></li>
+                        <li><code>zulu.finance</code> / <code>Finance#2026</code></li>
+                        <li><code>banda.viewer</code> / <code>Viewer#2026</code></li>
+                    </ul>
                     <p class="small mt-3 mb-0">
                         <a href="{{ url_for('main.home') }}">Back to homepage</a>
                     </p>

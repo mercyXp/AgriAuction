@@ -10,7 +10,11 @@
                 <div class="card-body p-4">
                     <h1 class="h3">403 — You do not have permission</h1>
                     <p>You do not have permission to perform this action. Sign in with an account that has the required role, or return to the home page.</p>
+                    {% if current_user %}
+                    <a class="btn btn-agri" href="{{ url_for('dashboard.index') }}">Return to dashboard</a>
+                    {% else %}
                     <a class="btn btn-agri" href="{{ url_for('main.home') }}">Return home</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

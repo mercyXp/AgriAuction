@@ -43,10 +43,22 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('main.home') }}#team">Team</a>
                     </li>
+                    {% if current_user %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'dashboard.index' %}active{% endif %}"
+                           href="{{ url_for('dashboard.index') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <form method="post" action="{{ url_for('main.logout') }}" class="d-inline">
+                            <button class="btn btn-agri-gold rounded-pill px-4" type="submit">Sign out</button>
+                        </form>
+                    </li>
+                    {% else %}
                     <li class="nav-item ms-lg-3">
                         <a class="btn btn-agri-gold rounded-pill px-4 {% if request.endpoint == 'main.login' %}active{% endif %}"
                            href="{{ url_for('main.login') }}">Get Started</a>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -54,6 +66,7 @@
     {% endblock %}
 
     <main id="main-content" class="flex-grow-1">
+        {% block flash_messages %}
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <div class="container mt-3">
@@ -66,6 +79,7 @@
                 </div>
             {% endif %}
         {% endwith %}
+        {% endblock %}
 
         {% block content %}{% endblock %}
     </main>
@@ -110,7 +124,11 @@
                 <div class="col-6 col-md-4 col-lg-2">
                     <h2 class="h6 footer-heading">Account</h2>
                     <ul class="list-unstyled footer-links">
+                        {% if current_user %}
+                        <li><a href="{{ url_for('dashboard.index') }}">Dashboard</a></li>
+                        {% else %}
                         <li><a href="{{ url_for('main.login') }}">Login</a></li>
+                        {% endif %}
                     </ul>
                 </div>
                 <div class="col-lg-3">
