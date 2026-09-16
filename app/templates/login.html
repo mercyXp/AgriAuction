@@ -10,7 +10,9 @@
         <div class="row g-0 min-vh-login">
             <div class="col-lg-5 d-flex align-items-center">
                 <div class="login-panel mx-auto py-5 px-4 px-sm-5">
-                    <img class="mb-3" src="{{ url_for('static', filename='img/logo.svg') }}" alt="" width="56" height="56">
+                    <img class="login-brand-logo mb-3"
+                         src="{{ url_for('static', filename='img/logo.png') }}"
+                         alt="AgriAuction Digital Produce Trading Platform">
                     <h1 id="login-heading" class="h3 fw-bold">Welcome back</h1>
                     <p class="text-muted mb-4">Sign in to the AgriAuction management system. Staff login is the entry point for farmers, lots, auctions, sales and payments.</p>
 
@@ -42,8 +44,8 @@
             </div>
             <div class="col-lg-7 d-none d-lg-block">
                 <img class="login-art-img"
-                     src="{{ url_for('static', filename='img/login-produce.svg') }}"
-                     alt="Illustrated crates of maize, tomatoes and grain at an AgriAuction depot.">
+                     src="{{ url_for('static', filename='img/loginHero.png') }}"
+                     alt="Fresh produce displayed in front of an AgriAuction depot.">
             </div>
         </div>
     </div>
